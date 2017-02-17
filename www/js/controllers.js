@@ -23,8 +23,16 @@ angular.module('starter.controllers', [])
   }])
 
 
-  .controller('BlogCtrl', function($scope) {
+  .controller('BlogCtrl', ['$http', '$scope', '$state', function($http, $scope) {
+    var API = 'http://localhost:8106/'
+    let me = this;
 
-  })
+    me.getBlogs = function () {
+      return $http.get(API + 'blogs').then(function (res) {
+        $scope.blogs = res.data
+      })
+    }
+    me.getBlogs()
+  }])
 
 

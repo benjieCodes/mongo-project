@@ -1,13 +1,14 @@
 <ion-view view-title="Blog Posts">
-  <ion-content ng-controller="">
-    <h1>{{blog.userName}}'s Posts</h1>
+  <ion-content ng-controller="BlogCtrl as me">
     <ion-item ng-repeat="blog in blogs">
     <div class="list card">
-      <div class="item item-avatar">
-        <h2>{{blog.title}}</h2>
-        <p>{{blog.date}}</p>
+      <div class="item item-body">
+        <h1g>{{blog.title}}</h1g>
+        <h4>{{blog.date | date}}</h4>
         <p>
           {{blog.body}}
+        </p>
+        <p>
           <a href="#" class="subdued">1 Like</a>
           <a href="#" class="subdued">5 Comments</a>
         </p>
