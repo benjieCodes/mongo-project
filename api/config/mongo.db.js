@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
+var connection = mongoose.connection;
 
-function log (connection) {
+function log () {
   connection.on('error', function (err) {
     console.log('Error connecting to Mongo DB: ' + err)
   })
@@ -26,4 +26,5 @@ function log (connection) {
   })
 }
 
-module.exports = connection;
+var server = log()
+module.exports = server;
