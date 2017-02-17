@@ -514,7 +514,7 @@ window.ionic.version = '1.3.2';
      * @name ionic.EventController#trigger
      * @alias ionic.trigger
      * @param {string} eventType The event to trigger.
-     * @param {object} data The data for the event. Hint: pass in
+     * @param {object} data The models for the event. Hint: pass in
      * `{target: targetElement}`
      * @param {boolean=} bubbles Whether the event should bubble up the DOM.
      * @param {boolean=} cancelable Whether the event should be cancelable.
@@ -1024,7 +1024,7 @@ window.ionic.version = '1.3.2';
 
 
     /**
-     * collect event data for ionic.Gestures js
+     * collect event models for ionic.Gestures js
      * @param   {HTMLElement}   element
      * @param   {String}        eventType        like ionic.Gestures.EVENT_MOVE
      * @param   {Object}        eventData
@@ -1340,10 +1340,10 @@ window.ionic.version = '1.3.2';
     // contains all registred ionic.Gestures.gestures in the correct order
     gestures: [],
 
-    // data of the current ionic.Gestures.gesture detection session
+    // models of the current ionic.Gestures.gesture detection session
     current: null,
 
-    // the previous ionic.Gestures.gesture session data
+    // the previous ionic.Gestures.gesture session models
     // is a full clone of the previous gesture.current object
     previous: null,
 
@@ -1384,7 +1384,7 @@ window.ionic.version = '1.3.2';
         return null;
       }
 
-      // extend event data with calculations about scale, distance etc
+      // extend event models with calculations about scale, distance etc
       eventData = this.extendEventData(eventData);
 
       // instance options
@@ -1424,7 +1424,7 @@ window.ionic.version = '1.3.2';
      * to stop other ionic.Gestures.gestures from being fired
      */
     stopDetect: function stopDetect() {
-      // clone current data to the store as the previous gesture
+      // clone current models to the store as the previous gesture
       // used for the double tap gesture, since this is an other gesture detect session
       this.previous = ionic.Gestures.utils.extend({}, this.current);
 
@@ -1560,7 +1560,7 @@ window.ionic.version = '1.3.2';
    * following arguments:
    *
    *      @param  {Object}    eventData
-   *      event data containing the following properties:
+   *      event models containing the following properties:
    *          timeStamp   {Number}        time the event occurred
    *          target      {HTMLElement}   target element
    *          touches     {Array}         touches (fingers, pointers, mouse) on the screen
@@ -1841,7 +1841,7 @@ window.ionic.version = '1.3.2';
               ionic.Gestures.detection.current.startEvent.center.pageX += ev.deltaX * factor;
               ionic.Gestures.detection.current.startEvent.center.pageY += ev.deltaY * factor;
 
-              // recalculate event data using new start point
+              // recalculate event models using new start point
               ev = ionic.Gestures.detection.extendEventData(ev);
             }
           }
@@ -2653,10 +2653,10 @@ window.ionic.version = '1.3.2';
  * ### Disabling the tap system
  *
  * To disable the tap for an element and all of its children elements,
- * add the attribute `data-tap-disabled="true"`.
+ * add the attribute `models-tap-disabled="true"`.
  *
  * ```html
- * <div data-tap-disabled="true">
+ * <div models-tap-disabled="true">
  *     <div id="google-map"></div>
  * </div>
  * ```
@@ -2775,9 +2775,9 @@ ionic.tap = {
   ignoreScrollStart: function(e) {
     return (e.defaultPrevented) ||  // defaultPrevented has been assigned by another component handling the event
            (/^(file|range)$/i).test(e.target.type) ||
-           (e.target.dataset ? e.target.dataset.preventScroll : e.target.getAttribute('data-prevent-scroll')) == 'true' || // manually set within an elements attributes
+           (e.target.dataset ? e.target.dataset.preventScroll : e.target.getAttribute('models-prevent-scroll')) == 'true' || // manually set within an elements attributes
            (!!(/^(object|embed)$/i).test(e.target.tagName)) ||  // flash/movie/object touches should not try to scroll
-           ionic.tap.isElementTapDisabled(e.target); // check if this element, or an ancestor, has `data-tap-disabled` attribute
+           ionic.tap.isElementTapDisabled(e.target); // check if this element, or an ancestor, has `models-tap-disabled` attribute
   },
 
   isTextInput: function(ele) {
@@ -2884,7 +2884,7 @@ ionic.tap = {
     if (ele && ele.nodeType === 1) {
       var element = ele;
       while (element) {
-        if (element.getAttribute && element.getAttribute('data-tap-disabled') == 'true') {
+        if (element.getAttribute && element.getAttribute('models-tap-disabled') == 'true') {
           return true;
         }
         element = element.parentElement;
@@ -4583,7 +4583,7 @@ var zyngaCore = { effect: {} };
             var time = +new Date();
             var currentRequests = requests;
 
-            // Reset data structure before executing callbacks
+            // Reset models structure before executing callbacks
             requests = {};
             requestCount = 0;
 
@@ -6150,7 +6150,7 @@ ionic.views.Scroll = ionic.views.View.inherit({
     top = Math.max(Math.min(self.__maxScrollTop, top), 0);
 
     // Don't animate when no change detected, still call publish to make sure
-    // that rendered position is really in-sync with internal data
+    // that rendered position is really in-sync with internal models
     if (left === self.__scrollLeft && top === self.__scrollTop) {
       animate = false;
     }
@@ -6275,7 +6275,7 @@ ionic.views.Scroll = ionic.views.View.inherit({
     // Some features are disabled in multi touch scenarios
     self.__isSingleTouch = isSingleTouch;
 
-    // Clearing data structure
+    // Clearing models structure
     self.__positions = [];
 
   },
@@ -8391,7 +8391,7 @@ ionic.views.Slider = ionic.views.View.inherit({
         var slide = slides[pos];
 
         slide.style.width = width + 'px';
-        slide.setAttribute('data-index', pos);
+        slide.setAttribute('models-index', pos);
 
         if (browser.transitions) {
           slide.style.left = (pos * -width) + 'px';
@@ -8797,7 +8797,7 @@ ionic.views.Slider = ionic.views.View.inherit({
       },
       transitionEnd: function(event) {
 
-        if (parseInt(event.target.getAttribute('data-index'), 10) == index) {
+        if (parseInt(event.target.getAttribute('models-index'), 10) == index) {
 
           if (delay) begin();
 
@@ -9261,7 +9261,7 @@ ionic.views.Slider = ionic.views.View.inherit({
             return;
         }
 
-        // Save instance in container HTML Element and in data
+        // Save instance in container HTML Element and in models
         s.container[0].swiper = s;
         s.container.data('swiper', s);
 
@@ -9631,8 +9631,8 @@ ionic.views.Slider = ionic.views.View.inherit({
                         .css({
                             'margin-top': (row !== 0 && s.params.spaceBetween) && (s.params.spaceBetween + 'px')
                         })
-                        .attr('data-swiper-column', column)
-                        .attr('data-swiper-row', row);
+                        .attr('models-swiper-column', column)
+                        .attr('models-swiper-row', row);
 
                 }
                 if (slide.css('display') === 'none') continue;
@@ -10155,11 +10155,11 @@ ionic.views.Slider = ionic.views.View.inherit({
                     duplicatedSlides;
                 if (s.params.loop) {
                     if (s.animating) return;
-                    realIndex = $(s.clickedSlide).attr('data-swiper-slide-index');
+                    realIndex = $(s.clickedSlide).attr('models-swiper-slide-index');
                     if (s.params.centeredSlides) {
                         if ((slideToIndex < s.loopedSlides - s.params.slidesPerView/2) || (slideToIndex > s.slides.length - s.loopedSlides + s.params.slidesPerView/2)) {
                             s.fixLoop();
-                            slideToIndex = s.wrapper.children('.' + s.params.slideClass + '[data-swiper-slide-index="' + realIndex + '"]:not(.swiper-slide-duplicate)').eq(0).index();
+                            slideToIndex = s.wrapper.children('.' + s.params.slideClass + '[models-swiper-slide-index="' + realIndex + '"]:not(.swiper-slide-duplicate)').eq(0).index();
                             setTimeout(function () {
                                 s.slideTo(slideToIndex);
                             }, 0);
@@ -10171,7 +10171,7 @@ ionic.views.Slider = ionic.views.View.inherit({
                     else {
                         if (slideToIndex > s.slides.length - s.params.slidesPerView) {
                             s.fixLoop();
-                            slideToIndex = s.wrapper.children('.' + s.params.slideClass + '[data-swiper-slide-index="' + realIndex + '"]:not(.swiper-slide-duplicate)').eq(0).index();
+                            slideToIndex = s.wrapper.children('.' + s.params.slideClass + '[models-swiper-slide-index="' + realIndex + '"]:not(.swiper-slide-duplicate)').eq(0).index();
                             setTimeout(function () {
                                 s.slideTo(slideToIndex);
                             }, 0);
@@ -11009,10 +11009,10 @@ ionic.views.Slider = ionic.views.View.inherit({
           var currentSlide = s.slides.eq(s.activeIndex);
           if ( angular.element(currentSlide).hasClass(s.params.slideDuplicateClass) ){
             // we're on a duplicate, so slide to the non-duplicate
-            var swiperSlideIndex = angular.element(currentSlide).attr("data-swiper-slide-index");
+            var swiperSlideIndex = angular.element(currentSlide).attr("models-swiper-slide-index");
             var slides = s.wrapper.children('.' + s.params.slideClass);
             for ( var i = 0; i < slides.length; i++ ){
-              if ( !angular.element(slides[i]).hasClass(s.params.slideDuplicateClass) && angular.element(slides[i]).attr("data-swiper-slide-index") === swiperSlideIndex ){
+              if ( !angular.element(slides[i]).hasClass(s.params.slideDuplicateClass) && angular.element(slides[i]).attr("models-swiper-slide-index") === swiperSlideIndex ){
                 s.slideTo(i, 0, false, true);
                 break;
               }
@@ -11029,12 +11029,12 @@ ionic.views.Slider = ionic.views.View.inherit({
           // Swiper loops utilize duplicate DOM elements for slides when in a loop
           // which means that we cannot rely on the actual slide index for our events
           // because index 0 does not necessarily point to index 0
-          // and index n+1 does not necessarily point to the expected piece of data
+          // and index n+1 does not necessarily point to the expected piece of models
           // therefore, rather than using the actual slide index we should
-          // use the data index that swiper includes as an attribute on the dom elements
+          // use the models index that swiper includes as an attribute on the dom elements
           // because this is what will be meaningful to the consumer of our events
           var slide = s.slides.eq(slideIndex);
-          var attributeIndex = angular.element(slide).attr("data-swiper-slide-index");
+          var attributeIndex = angular.element(slide).attr("models-swiper-slide-index");
           return parseInt(attributeIndex);
         }
 
@@ -11063,7 +11063,7 @@ ionic.views.Slider = ionic.views.View.inherit({
                 var slide = $(this);
                 if (index < s.loopedSlides) appendSlides.push(el);
                 if (index < slides.length && index >= slides.length - s.loopedSlides) prependSlides.push(el);
-                slide.attr('data-swiper-slide-index', index);
+                slide.attr('models-swiper-slide-index', index);
             });
             for (i = 0; i < appendSlides.length; i++) {
 
@@ -11089,7 +11089,7 @@ ionic.views.Slider = ionic.views.View.inherit({
         };
         s.destroyLoop = function () {
             s.wrapper.children('.' + s.params.slideClass + '.' + s.params.slideDuplicateClass).remove();
-            s.slides.removeAttr('data-swiper-slide-index');
+            s.slides.removeAttr('models-swiper-slide-index');
         };
         s.fixLoop = function () {
             var newIndex;
@@ -11430,22 +11430,22 @@ ionic.views.Slider = ionic.views.View.inherit({
                 img.each(function () {
                     var _img = $(this);
                     _img.addClass('swiper-lazy-loading');
-                    var background = _img.attr('data-background');
-                    var src = _img.attr('data-src'),
-                        srcset = _img.attr('data-srcset');
+                    var background = _img.attr('models-background');
+                    var src = _img.attr('models-src'),
+                        srcset = _img.attr('models-srcset');
                     s.loadImage(_img[0], (src || background), srcset, false, function () {
                         if (background) {
                             _img.css('background-image', 'url(' + background + ')');
-                            _img.removeAttr('data-background');
+                            _img.removeAttr('models-background');
                         }
                         else {
                             if (srcset) {
                                 _img.attr('srcset', srcset);
-                                _img.removeAttr('data-srcset');
+                                _img.removeAttr('models-srcset');
                             }
                             if (src) {
                                 _img.attr('src', src);
-                                _img.removeAttr('data-src');
+                                _img.removeAttr('models-src');
                             }
 
                         }
@@ -11453,13 +11453,13 @@ ionic.views.Slider = ionic.views.View.inherit({
                         _img.addClass('swiper-lazy-loaded').removeClass('swiper-lazy-loading');
                         slide.find('.swiper-lazy-preloader, .preloader').remove();
                         if (s.params.loop && loadInDuplicate) {
-                            var slideOriginalIndex = slide.attr('data-swiper-slide-index');
+                            var slideOriginalIndex = slide.attr('models-swiper-slide-index');
                             if (slide.hasClass(s.params.slideDuplicateClass)) {
-                                var originalSlide = s.wrapper.children('[data-swiper-slide-index="' + slideOriginalIndex + '"]:not(.' + s.params.slideDuplicateClass + ')');
+                                var originalSlide = s.wrapper.children('[models-swiper-slide-index="' + slideOriginalIndex + '"]:not(.' + s.params.slideDuplicateClass + ')');
                                 s.lazy.loadImageInSlide(originalSlide.index(), false);
                             }
                             else {
-                                var duplicatedSlide = s.wrapper.children('.' + s.params.slideDuplicateClass + '[data-swiper-slide-index="' + slideOriginalIndex + '"]');
+                                var duplicatedSlide = s.wrapper.children('.' + s.params.slideDuplicateClass + '[models-swiper-slide-index="' + slideOriginalIndex + '"]');
                                 s.lazy.loadImageInSlide(duplicatedSlide.index(), false);
                             }
                         }
@@ -11830,7 +11830,7 @@ ionic.views.Slider = ionic.views.View.inherit({
                 var speed = 0;
                 for (var i = 0, length = s.slides.length; i < length; i++) {
                     var slide = s.slides.eq(i);
-                    var slideHash = slide.attr('data-hash');
+                    var slideHash = slide.attr('models-hash');
                     if (slideHash === hash && !slide.hasClass(s.params.slideDuplicateClass)) {
                         var index = slide.index();
                         s.slideTo(index, speed, s.params.runCallbacksOnInit, true);
@@ -11839,7 +11839,7 @@ ionic.views.Slider = ionic.views.View.inherit({
             },
             setHash: function () {
                 if (!s.hashnav.initialized || !s.params.hashnav) return;
-                document.location.hash = s.slides.eq(s.activeIndex).attr('data-hash') || '';
+                document.location.hash = s.slides.eq(s.activeIndex).attr('models-hash') || '';
             }
         };
 
@@ -12055,9 +12055,9 @@ ionic.views.Slider = ionic.views.View.inherit({
             var p, pX, pY;
             var rtlFactor = s.rtl ? -1 : 1;
 
-            p = el.attr('data-swiper-parallax') || '0';
-            pX = el.attr('data-swiper-parallax-x');
-            pY = el.attr('data-swiper-parallax-y');
+            p = el.attr('models-swiper-parallax') || '0';
+            pX = el.attr('models-swiper-parallax-x');
+            pY = el.attr('models-swiper-parallax-y');
             if (pX || pY) {
                 pX = pX || '0';
                 pY = pY || '0';
@@ -12090,13 +12090,13 @@ ionic.views.Slider = ionic.views.View.inherit({
         }
         s.parallax = {
             setTranslate: function () {
-                s.container.children('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]').each(function(){
+                s.container.children('[models-swiper-parallax], [models-swiper-parallax-x], [models-swiper-parallax-y]').each(function(){
                     setParallaxTransform(this, s.progress);
 
                 });
                 s.slides.each(function () {
                     var slide = $(this);
-                    slide.find('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]').each(function () {
+                    slide.find('[models-swiper-parallax], [models-swiper-parallax-x], [models-swiper-parallax-y]').each(function () {
                         var progress = Math.min(Math.max(slide[0].progress, -1), 1);
                         setParallaxTransform(this, progress);
                     });
@@ -12104,9 +12104,9 @@ ionic.views.Slider = ionic.views.View.inherit({
             },
             setTransition: function (duration) {
                 if (typeof duration === 'undefined') duration = s.params.speed;
-                s.container.find('[data-swiper-parallax], [data-swiper-parallax-x], [data-swiper-parallax-y]').each(function(){
+                s.container.find('[models-swiper-parallax], [models-swiper-parallax-x], [models-swiper-parallax-y]').each(function(){
                     var el = $(this);
-                    var parallaxDuration = parseInt(el.attr('data-swiper-parallax-duration'), 10) || duration;
+                    var parallaxDuration = parseInt(el.attr('models-swiper-parallax-duration'), 10) || duration;
                     if (duration === 0) parallaxDuration = 0;
                     el.transition(parallaxDuration);
                 });
@@ -12357,8 +12357,8 @@ ionic.views.Slider = ionic.views.View.inherit({
                       s.params.slidePrevClass
                     ].join(' '))
                     .removeAttr('style')
-                    .removeAttr('data-swiper-column')
-                    .removeAttr('data-swiper-row');
+                    .removeAttr('models-swiper-column')
+                    .removeAttr('models-swiper-row');
             }
 
             // Pagination/Bullets
@@ -12626,7 +12626,7 @@ ionic.views.Slider = ionic.views.View.inherit({
                 if (typeof value === 'undefined') {
                     // Get value
                     if (this[0]) {
-                        var dataKey = this[0].getAttribute('data-' + key);
+                        var dataKey = this[0].getAttribute('models-' + key);
                         if (dataKey) return dataKey;
                         else if (this[0].dom7ElementDataStorage && (key in this[0].dom7ElementDataStorage)) return this[0].dom7ElementDataStorage[key];
                         else return undefined;
@@ -13398,7 +13398,7 @@ ionic.views.Slider = ionic.views.View.inherit({
  * If fewer arguments are specified than necessary for interpolation, the extra
  * interpolation markers will be preserved in the final string.
  *
- * Since data will be parsed statically during a build step, some restrictions
+ * Since models will be parsed statically during a build step, some restrictions
  * are applied with respect to how minErr instances are created and called.
  * Instances should have names of the form namespaceMinErr for a minErr created
  * using minErr('namespace') . Error codes, namespaces and template strings
@@ -14469,11 +14469,11 @@ var csp = function() {
 
 
     var ngCspElement = (document.querySelector('[ng-csp]') ||
-                    document.querySelector('[data-ng-csp]'));
+                    document.querySelector('[models-ng-csp]'));
 
     if (ngCspElement) {
       var ngCspAttribute = ngCspElement.getAttribute('ng-csp') ||
-                    ngCspElement.getAttribute('data-ng-csp');
+                    ngCspElement.getAttribute('models-ng-csp');
       csp.rules = {
         noUnsafeEval: !ngCspAttribute || (ngCspAttribute.indexOf('no-unsafe-eval') !== -1),
         noInlineStyle: !ngCspAttribute || (ngCspAttribute.indexOf('no-inline-style') !== -1)
@@ -14816,7 +14816,7 @@ function encodeUriQuery(val, pctEncodeSpaces) {
              replace(/%20/g, (pctEncodeSpaces ? '%20' : '+'));
 }
 
-var ngAttrPrefixes = ['ng-', 'data-ng-', 'ng:', 'x-ng-'];
+var ngAttrPrefixes = ['ng-', 'models-ng-', 'ng:', 'x-ng-'];
 
 function getNgAttribute(element, ngAttr) {
   var attr, i, ii = ngAttrPrefixes.length;
@@ -16028,7 +16028,7 @@ function publishExternalAPI(angular) {
  * - [`contents()`](http://api.jquery.com/contents/)
  * - [`css()`](http://api.jquery.com/css/) - Only retrieves inline-styles, does not call `getComputedStyle()`.
  *   As a setter, does not convert numbers to strings or append 'px', and also does not have automatic property prefixing.
- * - [`data()`](http://api.jquery.com/data/)
+ * - [`models()`](http://api.jquery.com/data/)
  * - [`detach()`](http://api.jquery.com/detach/)
  * - [`empty()`](http://api.jquery.com/empty/)
  * - [`eq()`](http://api.jquery.com/eq/)
@@ -16070,13 +16070,13 @@ function publishExternalAPI(angular) {
  *   `'ngModel'`).
  * - `injector()` - retrieves the injector of the current element or its parent.
  * - `scope()` - retrieves the {@link ng.$rootScope.Scope scope} of the current
- *   element or its parent. Requires {@link guide/production#disabling-debug-data Debug Data} to
+ *   element or its parent. Requires {@link guide/production#disabling-debug-models Debug Data} to
  *   be enabled.
  * - `isolateScope()` - retrieves an isolate {@link ng.$rootScope.Scope scope} if one is attached directly to the
  *   current element. This getter should be used only on elements that contain a directive which starts a new isolate
  *   scope. Calling `scope()` on this element always returns the original non-isolate scope.
- *   Requires {@link guide/production#disabling-debug-data Debug Data} to be enabled.
- * - `inheritedData()` - same as `data()`, but walks up the DOM until a value is found or the top
+ *   Requires {@link guide/production#disabling-debug-models Debug Data} to be enabled.
+ * - `inheritedData()` - same as `models()`, but walks up the DOM until a value is found or the top
  *   parent element is reached.
  *
  * @param {string|DOMElement} element HTML string or DOMElement to be wrapped into jQuery.
@@ -16148,7 +16148,7 @@ function jqLiteIsTextNode(html) {
 }
 
 function jqLiteAcceptsData(node) {
-  // The window object can accept data but has no nodeType
+  // The window object can accept models but has no nodeType
   // Otherwise we are only interested in elements (1) and documents (9)
   var nodeType = node.nodeType;
   return nodeType === NODE_TYPE_ELEMENT || !nodeType || nodeType === NODE_TYPE_DOCUMENT;
@@ -16360,16 +16360,16 @@ function jqLiteData(element, key, value) {
     var expandoStore = jqLiteExpandoStore(element, !isSimpleGetter);
     var data = expandoStore && expandoStore.data;
 
-    if (isSimpleSetter) { // data('key', value)
+    if (isSimpleSetter) { // models('key', value)
       data[key] = value;
     } else {
-      if (massGetter) {  // data()
+      if (massGetter) {  // models()
         return data;
       } else {
-        if (isSimpleGetter) { // data('key')
+        if (isSimpleGetter) { // models('key')
           // don't force creation of expandoStore if it doesn't exist yet
           return data && data[key];
-        } else { // mass-setter: data({key1: val1, key2: val2})
+        } else { // mass-setter: models({key1: val1, key2: val2})
           extend(data, key);
         }
       }
@@ -16703,7 +16703,7 @@ forEach({
         // we are a write, but the object properties are the key/values
         for (i = 0; i < nodeCount; i++) {
           if (fn === jqLiteData) {
-            // data() takes the whole object in jQuery
+            // models() takes the whole object in jQuery
             fn(this[i], arg1);
           } else {
             for (key in arg1) {
@@ -19094,7 +19094,7 @@ var $CoreAnimateCssProvider = function() {
 
     return function(element, initialOptions) {
       // all of the animation functions should create
-      // a copy of the options data, however, if a
+      // a copy of the options models, however, if a
       // parent service has already created a copy then
       // we should stick to using that
       var options = initialOptions || {};
@@ -19612,9 +19612,9 @@ function $CacheFactoryProvider() {
        * @name $cacheFactory.Cache
        *
        * @description
-       * A cache object used to store and retrieve data, primarily used by
+       * A cache object used to store and retrieve models, primarily used by
        * {@link $http $http} and the {@link ng.directive:script script} directive to cache
-       * templates and other data.
+       * templates and other models.
        *
        * ```js
        *  angular.module('superCache')
@@ -19661,7 +19661,7 @@ function $CacheFactoryProvider() {
          *
          * It will not insert undefined values into the cache.
          *
-         * @param {string} key the key under which the cached data is stored.
+         * @param {string} key the key under which the cached models is stored.
          * @param {*} value the value to store alongside the key. If it is undefined, the key
          *    will not be stored.
          * @returns {*} the value stored.
@@ -19690,9 +19690,9 @@ function $CacheFactoryProvider() {
          * @kind function
          *
          * @description
-         * Retrieves named data stored in the {@link $cacheFactory.Cache Cache} object.
+         * Retrieves named models stored in the {@link $cacheFactory.Cache Cache} object.
          *
-         * @param {string} key the key of the data to be retrieved
+         * @param {string} key the key of the models to be retrieved
          * @returns {*} the value stored.
          */
         get: function(key) {
@@ -21052,7 +21052,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
    *
    * The sanitization is a security measure aimed at preventing XSS attacks via html links.
    *
-   * Any url about to be assigned to a[href] via data-binding is first normalized and turned into
+   * Any url about to be assigned to a[href] via models-binding is first normalized and turned into
    * an absolute url. Afterwards, the url is matched against the `aHrefSanitizationWhitelist`
    * regular expression. If a match is found, the original url is written into the dom. Otherwise,
    * the absolute url is prefixed with `'unsafe:'` string and only then is it written into the DOM.
@@ -21082,7 +21082,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
    *
    * The sanitization is a security measure aimed at prevent XSS attacks via html links.
    *
-   * Any url about to be assigned to img[src] via data-binding is first normalized and turned into
+   * Any url about to be assigned to img[src] via models-binding is first normalized and turned into
    * an absolute url. Afterwards, the url is matched against the `imgSrcSanitizationWhitelist`
    * regular expression. If a match is found, the original url is written into the dom. Otherwise,
    * the absolute url is prefixed with `'unsafe:'` string and only then is it written into the DOM.
@@ -21115,10 +21115,10 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
    * binding information and a reference to the current scope on to DOM elements.
    * If enabled, the compiler will add the following to DOM elements that have been bound to the scope
    * * `ng-binding` CSS class
-   * * `$binding` data property containing an array of the binding expressions
+   * * `$binding` models property containing an array of the binding expressions
    *
    * You may want to disable this in production for a significant performance boost. See
-   * {@link guide/production#disabling-debug-data Disabling Debug Data} for more.
+   * {@link guide/production#disabling-debug-models Disabling Debug Data} for more.
    *
    * The default value is true.
    */
@@ -21223,7 +21223,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
        *
        * @description
        * Converts an attribute name (e.g. dash/colon/underscore-delimited string, optionally prefixed with `x-` or
-       * `data-`) to its normalized, camelCase form.
+       * `models-`) to its normalized, camelCase form.
        *
        * Also there is special case for Moz prefix starting with upper case letter.
        *
@@ -21517,7 +21517,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
       var NOT_EMPTY = /\S+/;
 
       // We can not compile top level text elements since text nodes can be merged and we will
-      // not be able to attach scope data to them, so we will wrap them in <span>
+      // not be able to attach scope models to them, so we will wrap them in <span>
       for (var i = 0, len = $compileNodes.length; i < len; i++) {
         var domNode = $compileNodes[i];
 
@@ -22463,7 +22463,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
         if (inheritType === '^^') {
           $element = $element.parent();
         //Otherwise attempt getting the controller from elementControllers in case
-        //the element is transcluded (and has no data) and to avoid .data if possible
+        //the element is transcluded (and has no models) and to avoid .models if possible
         } else {
           value = elementControllers && elementControllers[name];
           value = value && value.instance;
@@ -22513,8 +22513,8 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
         var controllerInstance = $controller(controller, locals, true, directive.controllerAs);
 
         // For directives with element transclusion the element is a comment.
-        // In this case .data will not attach any data.
-        // Instead, we save the controllers for the element in a local hash and attach to .data
+        // In this case .models will not attach any models.
+        // Instead, we save the controllers for the element in a local hash and attach to .models
         // later, once we have the actual element.
         elementControllers[directive.name] = controllerInstance;
         $element.data('$' + directive.name + 'Controller', controllerInstance.instance);
@@ -22633,7 +22633,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           dst['style'] = (dst['style'] ? dst['style'] + ';' : '') + value;
           // `dst` will never contain hasOwnProperty as DOM parser won't let it.
           // You will get an "InvalidCharacterError: DOM Exception 5" error if you
-          // have an attribute like "has-own-property" or "data-has-own-property", etc.
+          // have an attribute like "has-own-property" or "models-has-own-property", etc.
         } else if (key.charAt(0) != '$' && !dst.hasOwnProperty(key)) {
           dst[key] = value;
           dstAttr[key] = srcAttr[key];
@@ -22966,16 +22966,16 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
       }
 
       if (jqLite.hasData(firstElementToRemove)) {
-        // Copy over user data (that includes Angular's $scope etc.). Don't copy private
-        // data here because there's no public interface in jQuery to do that and copying over
-        // event listeners (which is the main use of private data) wouldn't work anyway.
+        // Copy over user models (that includes Angular's $scope etc.). Don't copy private
+        // models here because there's no public interface in jQuery to do that and copying over
+        // event listeners (which is the main use of private models) wouldn't work anyway.
         jqLite.data(newNode, jqLite.data(firstElementToRemove));
 
         // Remove $destroy event listeners from `firstElementToRemove`
         jqLite(firstElementToRemove).off('$destroy');
       }
 
-      // Cleanup any data/listeners on the elements and children.
+      // Cleanup any models/listeners on the elements and children.
       // This includes invoking the $destroy event on any elements with listeners.
       jqLite.cleanData(fragment.querySelectorAll('*'));
 
@@ -23172,7 +23172,7 @@ function directiveNormalize(name) {
  * needed since all of these are treated as equivalent in Angular:
  *
  * ```
- *    <span ng:bind="a" ng-bind="a" data-ng-bind="a" x-ng-bind="a">
+ *    <span ng:bind="a" ng-bind="a" models-ng-bind="a" x-ng-bind="a">
  * ```
  */
 
@@ -23622,7 +23622,7 @@ function $HttpParamSerializerJQLikeProvider() {
    * {@link $httpProvider#defaults `$httpProvider`}.
    *
    * Additionally, you can inject the serializer and use it explicitly, for example to serialize
-   * form data for submission:
+   * form models for submission:
    *
    * ```js
    * .controller(function($http, $httpParamSerializerJQLike) {
@@ -23631,7 +23631,7 @@ function $HttpParamSerializerJQLikeProvider() {
    *   $http({
    *     url: myUrl,
    *     method: 'POST',
-   *     data: $httpParamSerializerJQLike(myData),
+   *     models: $httpParamSerializerJQLike(myData),
    *     headers: {
    *       'Content-Type': 'application/x-www-form-urlencoded'
    *     }
@@ -23760,7 +23760,7 @@ function headersGetter(headers) {
  * @param {function(string=)} headers HTTP headers getter fn.
  * @param {number} status HTTP status code of the response.
  * @param {(Function|Array.<Function>)} fns Function or an array of functions.
- * @returns {*} Transformed data.
+ * @returns {*} Transformed models.
  */
 function transformData(data, headers, status, fns) {
   if (isFunction(fns)) {
@@ -23820,10 +23820,10 @@ function $HttpProvider() {
    *
    **/
   var defaults = this.defaults = {
-    // transform incoming response data
+    // transform incoming response models
     transformResponse: [defaultHttpResponseTransform],
 
-    // transform outgoing request data
+    // transform outgoing request models
     transformRequest: [function(d) {
       return isObject(d) && !isFile(d) && !isBlob(d) && !isFormData(d) ? toJson(d) : d;
     }],
@@ -24491,7 +24491,7 @@ function $HttpProvider() {
         var headers = config.headers;
         var reqData = transformData(config.data, headersGetter(headers), undefined, config.transformRequest);
 
-        // strip content-type if data is undefined
+        // strip content-type if models is undefined
         if (isUndefined(reqData)) {
           forEach(headers, function(value, header) {
             if (lowercase(header) === 'content-type') {
@@ -29992,8 +29992,8 @@ function $RootScopeProvider() {
        *
        * @param {function(newCollection, oldCollection, scope)} listener a callback function called
        *    when a change is detected.
-       *    - The `newCollection` object is the newly modified data obtained from the `obj` expression
-       *    - The `oldCollection` object is a copy of the former collection data.
+       *    - The `newCollection` object is the newly modified models obtained from the `obj` expression
+       *    - The `oldCollection` object is a copy of the former collection models.
        *      Due to performance considerations, the`oldCollection` value is computed only if the
        *      `listener` function declares two or more arguments.
        *    - The `scope` argument refers to the current scope.
@@ -30838,7 +30838,7 @@ function $$SanitizeUriProvider() {
    *
    * The sanitization is a security measure aimed at prevent XSS attacks via html links.
    *
-   * Any url about to be assigned to a[href] via data-binding is first normalized and turned into
+   * Any url about to be assigned to a[href] via models-binding is first normalized and turned into
    * an absolute url. Afterwards, the url is matched against the `aHrefSanitizationWhitelist`
    * regular expression. If a match is found, the original url is written into the dom. Otherwise,
    * the absolute url is prefixed with `'unsafe:'` string and only then is it written into the DOM.
@@ -30863,7 +30863,7 @@ function $$SanitizeUriProvider() {
    *
    * The sanitization is a security measure aimed at prevent XSS attacks via html links.
    *
-   * Any url about to be assigned to img[src] via data-binding is first normalized and turned into
+   * Any url about to be assigned to img[src] via models-binding is first normalized and turned into
    * an absolute url. Afterwards, the url is matched against the `imgSrcSanitizationWhitelist`
    * regular expression. If a match is found, the original url is written into the dom. Otherwise,
    * the absolute url is prefixed with `'unsafe:'` string and only then is it written into the DOM.
@@ -32093,7 +32093,7 @@ function $TemplateRequestProvider() {
    * @description
    * The `$templateRequest` service runs security checks then downloads the provided template using
    * `$http` and, upon success, stores the contents inside of `$templateCache`. If the HTTP request
-   * fails or the response data of the HTTP request is empty, a `$compile` error will be thrown (the
+   * fails or the response models of the HTTP request is empty, a `$compile` error will be thrown (the
    * exception can be thwarted by setting the 2nd parameter of the function to true). Note that the
    * contents of `$templateCache` are trusted, so the call to `$sce.getTrustedUrl(tpl)` is omitted
    * when `tpl` is of type string and `$templateCache` has the matching entry.
@@ -32104,7 +32104,7 @@ function $TemplateRequestProvider() {
    * @param {string|TrustedResourceUrl} tpl The HTTP request template URL
    * @param {boolean=} ignoreRequestError Whether or not to ignore the exception when the request fails or the template is empty
    *
-   * @return {Promise} a promise for the HTTP response data of the given URL.
+   * @return {Promise} a promise for the HTTP response models of the given URL.
    *
    * @property {number} totalPendingRequests total amount of pending template requests being downloaded.
    */
@@ -32220,7 +32220,7 @@ function $$TestabilityProvider() {
      *     for the expression.
      */
     testability.findModels = function(element, expression, opt_exactMatch) {
-      var prefixes = ['ng-', 'data-ng-', 'ng\\:'];
+      var prefixes = ['ng-', 'models-ng-', 'ng\\:'];
       for (var p = 0; p < prefixes.length; ++p) {
         var attributeEquals = opt_exactMatch ? '=' : '*=';
         var selector = '[' + prefixes[p] + 'model' + attributeEquals + '"' + expression + '"]';
@@ -36459,7 +36459,7 @@ function createDateInputType(type, regexp, parseDate, format) {
       if (regexp.test(value)) {
         // Note: We cannot read ctrl.$modelValue, as there might be a different
         // parser/formatter in the processing chain so that the model
-        // contains some different data format!
+        // contains some different models format!
         var parsedDate = parseDate(value, previousDate);
         if (timezone) {
           parsedDate = convertTimezoneToLocal(parsedDate, timezone);
@@ -36681,16 +36681,16 @@ function checkboxInputType(scope, element, attr, ctrl, $sniffer, $browser, $filt
  * @restrict E
  *
  * @description
- * HTML textarea element control with angular data-binding. The data-binding and validation
+ * HTML textarea element control with angular models-binding. The models-binding and validation
  * properties of this element are exactly the same as those of the
  * {@link ng.directive:input input element}.
  *
- * @param {string} ngModel Assignable angular expression to data-bind to.
+ * @param {string} ngModel Assignable angular expression to models-bind to.
  * @param {string=} name Property name of the form under which the control is published.
  * @param {string=} required Sets `required` validation error key if the value is not entered.
  * @param {string=} ngRequired Adds `required` attribute and `required` validation constraint to
  *    the element when the ngRequired expression evaluates to true. Use `ngRequired` instead of
- *    `required` when you want to data-bind to the `required` attribute.
+ *    `required` when you want to models-bind to the `required` attribute.
  * @param {number=} ngMinlength Sets `minlength` validation error key if the value is shorter than
  *    minlength.
  * @param {number=} ngMaxlength Sets `maxlength` validation error key if the value is longer than
@@ -39536,7 +39536,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
    * @description
    * This is called when we need to determine if the value of an input is empty.
    *
-   * For instance, the required directive does this to work out if the input has data or not.
+   * For instance, the required directive does this to work out if the input has models or not.
    *
    * The default `$isEmpty` function checks whether the value is `undefined`, `''`, `null` or `NaN`.
    *
@@ -39577,7 +39577,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
    *
    * @param {string} validationErrorKey Name of the validator. The `validationErrorKey` will be assigned
    *        to either `$error[validationErrorKey]` or `$pending[validationErrorKey]`
-   *        (for unfulfilled `$asyncValidators`), so that it is available for data-binding.
+   *        (for unfulfilled `$asyncValidators`), so that it is available for models-binding.
    *        The `validationErrorKey` should be in camelCase and will get converted into dash-case
    *        for class name. Example: `myError` will result in `ng-valid-my-error` and `ng-invalid-my-error`
    *        class and can be bound to as  `{{someForm.someControl.$error.myError}}` .
@@ -44086,7 +44086,7 @@ $provide.value("$locale", {
 
 })(window, document);
 
-!window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
+!window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[models-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 /*!
  * ionic.bundle.js is a concatenation of:
  * ionic.js, angular.js, angular-animate.js,
@@ -45074,7 +45074,7 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
 
     return function init(element, initialOptions) {
       // all of the animation functions should create
-      // a copy of the options data, however, if a
+      // a copy of the options models, however, if a
       // parent service has already created a copy then
       // we should stick to using that
       var options = initialOptions || {};
@@ -45382,7 +45382,7 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
           element.off(events.join(' '), onAnimationProgress);
         }
 
-        //Cancel the fallback closing timeout and remove the timer data
+        //Cancel the fallback closing timeout and remove the timer models
         var animationTimerData = element.data(ANIMATE_TIMER_KEY);
         if (animationTimerData) {
           $timeout.cancel(animationTimerData[0].timer);
@@ -46239,7 +46239,7 @@ var $$AnimateJsDriverProvider = ['$$animationProvider', function($$animationProv
   }];
 }];
 
-var NG_ANIMATE_ATTR_NAME = 'data-ng-animate';
+var NG_ANIMATE_ATTR_NAME = 'models-ng-animate';
 var NG_ANIMATE_PIN_DATA = '$ngAnimatePin';
 var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
   var PRE_DIGEST_STATE = 1;
@@ -46523,7 +46523,7 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
     function queueAnimation(element, event, initialOptions) {
       // we always make a copy of the options since
       // there should never be any side effects on
-      // the input data when running `$animateCss`.
+      // the input models when running `$animateCss`.
       var options = copy(initialOptions);
 
       var node, parent;
@@ -46731,7 +46731,7 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
 
           // in the event that the element animation was not cancelled or a follow-up animation
           // isn't allowed to animate from here then we need to clear the state of the element
-          // so that any future animations won't read the expired animation data.
+          // so that any future animations won't read the expired animation models.
           if (!isValidAnimation) {
             clearElementAnimationState(element);
           }
@@ -46892,7 +46892,7 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
 
         if (bodyElementDetected && rootElementDetected) {
           // If both body and root have been found, any other checks are pointless,
-          // as no animation data should live outside the application
+          // as no animation models should live outside the application
           break;
         }
 
@@ -47071,7 +47071,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
       }
 
       animationQueue.push({
-        // this data is used by the postDigest code and passed into
+        // this models is used by the postDigest code and passed into
         // the driver step function
         element: element,
         classes: classes,
@@ -49181,7 +49181,7 @@ angular.module('ui.router.util', ['ng']);
 /**
  * @ngdoc overview
  * @name ui.router.router
- * 
+ *
  * @requires ui.router.util
  *
  * @description
@@ -49195,7 +49195,7 @@ angular.module('ui.router.router', ['ui.router.util']);
 /**
  * @ngdoc overview
  * @name ui.router.state
- * 
+ *
  * @requires ui.router.router
  * @requires ui.router.util
  *
@@ -49204,7 +49204,7 @@ angular.module('ui.router.router', ['ui.router.util']);
  *
  * This module is a dependency of the main ui.router module. Do not include this module as a dependency
  * in your angular app (use {@link ui.router} module instead).
- * 
+ *
  */
 angular.module('ui.router.state', ['ui.router.router', 'ui.router.util']);
 
@@ -49216,17 +49216,17 @@ angular.module('ui.router.state', ['ui.router.router', 'ui.router.util']);
  *
  * @description
  * # ui.router
- * 
- * ## The main module for ui.router 
+ *
+ * ## The main module for ui.router
  * There are several sub-modules included with the ui.router module, however only this module is needed
- * as a dependency within your angular app. The other modules are for organization purposes. 
+ * as a dependency within your angular app. The other modules are for organization purposes.
  *
  * The modules are:
  * * ui.router - the main "umbrella" module
- * * ui.router.router - 
- * 
+ * * ui.router.router -
+ *
  * *You'll need to include **only** this module as the dependency within your angular app.*
- * 
+ *
  * <pre>
  * <!doctype html>
  * <html ng-app="myApp">
@@ -49260,14 +49260,14 @@ angular.module('ui.router.compat', ['ui.router']);
  */
 $Resolve.$inject = ['$q', '$injector'];
 function $Resolve(  $q,    $injector) {
-  
+
   var VISIT_IN_PROGRESS = 1,
       VISIT_DONE = 2,
       NOTHING = {},
       NO_DEPENDENCIES = [],
       NO_LOCALS = NOTHING,
       NO_PARENT = extend($q.when(NOTHING), { $$promises: NOTHING, $$values: NOTHING });
-  
+
 
   /**
    * @ngdoc function
@@ -49283,7 +49283,7 @@ function $Resolve(  $q,    $injector) {
    * <pre>
    * $resolve.resolve(invocables, locals, parent, self)
    * </pre>
-   * but the former is more efficient (in fact `resolve` just calls `study` 
+   * but the former is more efficient (in fact `resolve` just calls `study`
    * internally).
    *
    * @param {object} invocables Invocable objects
@@ -49292,19 +49292,19 @@ function $Resolve(  $q,    $injector) {
   this.study = function (invocables) {
     if (!isObject(invocables)) throw new Error("'invocables' must be an object");
     var invocableKeys = objectKeys(invocables || {});
-    
+
     // Perform a topological sort of invocables to build an ordered plan
     var plan = [], cycle = [], visited = {};
     function visit(value, key) {
       if (visited[key] === VISIT_DONE) return;
-      
+
       cycle.push(key);
       if (visited[key] === VISIT_IN_PROGRESS) {
         cycle.splice(0, indexOf(cycle, key));
         throw new Error("Cyclic dependency: " + cycle.join(" -> "));
       }
       visited[key] = VISIT_IN_PROGRESS;
-      
+
       if (isString(value)) {
         plan.push(key, [ function() { return $injector.get(value); }], NO_DEPENDENCIES);
       } else {
@@ -49314,17 +49314,17 @@ function $Resolve(  $q,    $injector) {
         });
         plan.push(key, value, params);
       }
-      
+
       cycle.pop();
       visited[key] = VISIT_DONE;
     }
     forEach(invocables, visit);
     invocables = cycle = visited = null; // plan is all that's required
-    
+
     function isResolve(value) {
       return isObject(value) && value.then && value.$$promises;
     }
-    
+
     return function (locals, parent, self) {
       if (isResolve(locals) && self === undefined) {
         self = parent; parent = locals; locals = null;
@@ -49332,12 +49332,12 @@ function $Resolve(  $q,    $injector) {
       if (!locals) locals = NO_LOCALS;
       else if (!isObject(locals)) {
         throw new Error("'locals' must be an object");
-      }       
+      }
       if (!parent) parent = NO_PARENT;
       else if (!isResolve(parent)) {
         throw new Error("'parent' must be a promise returned by $resolve.resolve()");
       }
-      
+
       // To complete the overall resolution, we have to wait for the parent
       // promise and for the promise for each invokable in our plan.
       var resolution = $q.defer(),
@@ -49346,18 +49346,18 @@ function $Resolve(  $q,    $injector) {
           values = extend({}, locals),
           wait = 1 + plan.length/3,
           merged = false;
-          
+
       function done() {
         // Merge parent values we haven't got yet and publish our own $$values
         if (!--wait) {
-          if (!merged) merge(values, parent.$$values); 
+          if (!merged) merge(values, parent.$$values);
           result.$$values = values;
           result.$$promises = result.$$promises || true; // keep for isResolve()
           delete result.$$inheritedValues;
           resolution.resolve(values);
         }
       }
-      
+
       function fail(reason) {
         result.$$failure = reason;
         resolution.reject(reason);
@@ -49368,7 +49368,7 @@ function $Resolve(  $q,    $injector) {
         fail(parent.$$failure);
         return result;
       }
-      
+
       if (parent.$$inheritedValues) {
         merge(values, omit(parent.$$inheritedValues, invocableKeys));
       }
@@ -49383,16 +49383,16 @@ function $Resolve(  $q,    $injector) {
       } else {
         if (parent.$$inheritedValues) {
           result.$$inheritedValues = omit(parent.$$inheritedValues, invocableKeys);
-        }        
+        }
         parent.then(done, fail);
       }
-      
+
       // Process each invocable in the plan, but ignore any where a local of the same name exists.
       for (var i=0, ii=plan.length; i<ii; i+=3) {
         if (locals.hasOwnProperty(plan[i])) done();
         else invoke(plan[i], plan[i+1], plan[i+2]);
       }
-      
+
       function invoke(key, invocable, params) {
         // Create a deferred for this invocation. Failures will propagate to the resolution as well.
         var invocation = $q.defer(), waitParams = 0;
@@ -49427,65 +49427,65 @@ function $Resolve(  $q,    $injector) {
         // Publish promise synchronously; invocations further down in the plan may depend on it.
         promises[key] = invocation.promise;
       }
-      
+
       return result;
     };
   };
-  
+
   /**
    * @ngdoc function
    * @name ui.router.util.$resolve#resolve
    * @methodOf ui.router.util.$resolve
    *
    * @description
-   * Resolves a set of invocables. An invocable is a function to be invoked via 
-   * `$injector.invoke()`, and can have an arbitrary number of dependencies. 
+   * Resolves a set of invocables. An invocable is a function to be invoked via
+   * `$injector.invoke()`, and can have an arbitrary number of dependencies.
    * An invocable can either return a value directly,
-   * or a `$q` promise. If a promise is returned it will be resolved and the 
-   * resulting value will be used instead. Dependencies of invocables are resolved 
+   * or a `$q` promise. If a promise is returned it will be resolved and the
+   * resulting value will be used instead. Dependencies of invocables are resolved
    * (in this order of precedence)
    *
    * - from the specified `locals`
    * - from another invocable that is part of this `$resolve` call
-   * - from an invocable that is inherited from a `parent` call to `$resolve` 
+   * - from an invocable that is inherited from a `parent` call to `$resolve`
    *   (or recursively
    * - from any ancestor `$resolve` of that parent).
    *
-   * The return value of `$resolve` is a promise for an object that contains 
+   * The return value of `$resolve` is a promise for an object that contains
    * (in this order of precedence)
    *
    * - any `locals` (if specified)
    * - the resolved return values of all injectables
    * - any values inherited from a `parent` call to `$resolve` (if specified)
    *
-   * The promise will resolve after the `parent` promise (if any) and all promises 
-   * returned by injectables have been resolved. If any invocable 
-   * (or `$injector.invoke`) throws an exception, or if a promise returned by an 
-   * invocable is rejected, the `$resolve` promise is immediately rejected with the 
-   * same error. A rejection of a `parent` promise (if specified) will likewise be 
-   * propagated immediately. Once the `$resolve` promise has been rejected, no 
+   * The promise will resolve after the `parent` promise (if any) and all promises
+   * returned by injectables have been resolved. If any invocable
+   * (or `$injector.invoke`) throws an exception, or if a promise returned by an
+   * invocable is rejected, the `$resolve` promise is immediately rejected with the
+   * same error. A rejection of a `parent` promise (if specified) will likewise be
+   * propagated immediately. Once the `$resolve` promise has been rejected, no
    * further invocables will be called.
-   * 
+   *
    * Cyclic dependencies between invocables are not permitted and will caues `$resolve`
-   * to throw an error. As a special case, an injectable can depend on a parameter 
-   * with the same name as the injectable, which will be fulfilled from the `parent` 
-   * injectable of the same name. This allows inherited values to be decorated. 
+   * to throw an error. As a special case, an injectable can depend on a parameter
+   * with the same name as the injectable, which will be fulfilled from the `parent`
+   * injectable of the same name. This allows inherited values to be decorated.
    * Note that in this case any other injectable in the same `$resolve` with the same
    * dependency would see the decorated value, not the inherited value.
    *
-   * Note that missing dependencies -- unlike cyclic dependencies -- will cause an 
-   * (asynchronous) rejection of the `$resolve` promise rather than a (synchronous) 
+   * Note that missing dependencies -- unlike cyclic dependencies -- will cause an
+   * (asynchronous) rejection of the `$resolve` promise rather than a (synchronous)
    * exception.
    *
-   * Invocables are invoked eagerly as soon as all dependencies are available. 
+   * Invocables are invoked eagerly as soon as all dependencies are available.
    * This is true even for dependencies inherited from a `parent` call to `$resolve`.
    *
-   * As a special case, an invocable can be a string, in which case it is taken to 
-   * be a service name to be passed to `$injector.get()`. This is supported primarily 
-   * for backwards-compatibility with the `resolve` property of `$routeProvider` 
+   * As a special case, an invocable can be a string, in which case it is taken to
+   * be a service name to be passed to `$injector.get()`. This is supported primarily
+   * for backwards-compatibility with the `resolve` property of `$routeProvider`
    * routes.
    *
-   * @param {object} invocables functions to invoke or 
+   * @param {object} invocables functions to invoke or
    * `$injector` services to fetch.
    * @param {object} locals  values to make available to the injectables
    * @param {object} parent  a promise returned by another call to `$resolve`.
@@ -49521,23 +49521,23 @@ function $TemplateFactory(  $http,   $templateCache,   $injector) {
    * @methodOf ui.router.util.$templateFactory
    *
    * @description
-   * Creates a template from a configuration object. 
+   * Creates a template from a configuration object.
    *
-   * @param {object} config Configuration object for which to load a template. 
-   * The following properties are search in the specified order, and the first one 
+   * @param {object} config Configuration object for which to load a template.
+   * The following properties are search in the specified order, and the first one
    * that is defined is used to create the template:
    *
-   * @param {string|object} config.template html string template or function to 
+   * @param {string|object} config.template html string template or function to
    * load via {@link ui.router.util.$templateFactory#fromString fromString}.
-   * @param {string|object} config.templateUrl url to load or a function returning 
+   * @param {string|object} config.templateUrl url to load or a function returning
    * the url to load via {@link ui.router.util.$templateFactory#fromUrl fromUrl}.
-   * @param {Function} config.templateProvider function to invoke via 
+   * @param {Function} config.templateProvider function to invoke via
    * {@link ui.router.util.$templateFactory#fromProvider fromProvider}.
    * @param {object} params  Parameters to pass to the template function.
-   * @param {object} locals Locals to pass to `invoke` if the template is loaded 
+   * @param {object} locals Locals to pass to `invoke` if the template is loaded
    * via a `templateProvider`. Defaults to `{ params: params }`.
    *
-   * @return {string|object}  The template html as a string, or a promise for 
+   * @return {string|object}  The template html as a string, or a promise for
    * that string,or `null` if no template is configured.
    */
   this.fromConfig = function (config, params, locals) {
@@ -49557,11 +49557,11 @@ function $TemplateFactory(  $http,   $templateCache,   $injector) {
    * @description
    * Creates a template from a string or a function returning a string.
    *
-   * @param {string|object} template html template as a string or function that 
+   * @param {string|object} template html template as a string or function that
    * returns an html template as a string.
    * @param {object} params Parameters to pass to the template function.
    *
-   * @return {string|object} The template html as a string, or a promise for that 
+   * @return {string|object} The template html as a string, or a promise for that
    * string.
    */
   this.fromString = function (template, params) {
@@ -49572,14 +49572,14 @@ function $TemplateFactory(  $http,   $templateCache,   $injector) {
    * @ngdoc function
    * @name ui.router.util.$templateFactory#fromUrl
    * @methodOf ui.router.util.$templateFactory
-   * 
+   *
    * @description
    * Loads a template from the a URL via `$http` and `$templateCache`.
    *
-   * @param {string|Function} url url of the template to load, or a function 
+   * @param {string|Function} url url of the template to load, or a function
    * that returns a url.
    * @param {Object} params Parameters to pass to the url function.
-   * @return {string|Promise.<string>} The template html as a string, or a promise 
+   * @return {string|Promise.<string>} The template html as a string, or a promise
    * for that string.
    */
   this.fromUrl = function (url, params) {
@@ -49600,9 +49600,9 @@ function $TemplateFactory(  $http,   $templateCache,   $injector) {
    *
    * @param {Function} provider Function to invoke via `$injector.invoke`
    * @param {Object} params Parameters for the template.
-   * @param {Object} locals Locals to pass to `invoke`. Defaults to 
+   * @param {Object} locals Locals to pass to `invoke`. Defaults to
    * `{ params: params }`.
-   * @return {string|Promise.<string>} The template html as a string, or a promise 
+   * @return {string|Promise.<string>} The template html as a string, or a promise
    * for that string.
    */
   this.fromProvider = function (provider, params, locals) {
@@ -49624,7 +49624,7 @@ var $$UMFP; // reference to $UrlMatcherFactoryProvider
  * of search parameters. Multiple search parameter names are separated by '&'. Search parameters
  * do not influence whether or not a URL is matched, but their values are passed through into
  * the matched parameters returned by {@link ui.router.util.type:UrlMatcher#methods_exec exec}.
- * 
+ *
  * Path parameter placeholders can be specified using simple colon/catch-all syntax or curly brace
  * syntax, which optionally allows a regular expression for the parameter to be specified:
  *
@@ -49635,13 +49635,13 @@ var $$UMFP; // reference to $UrlMatcherFactoryProvider
  *   regexp itself contain curly braces, they must be in matched pairs or escaped with a backslash.
  *
  * Parameter names may contain only word characters (latin letters, digits, and underscore) and
- * must be unique within the pattern (across both path and search parameters). For colon 
+ * must be unique within the pattern (across both path and search parameters). For colon
  * placeholders or curly placeholders without an explicit regexp, a path parameter matches any
  * number of characters other than '/'. For catch-all placeholders the path parameter matches
  * any number of characters.
- * 
+ *
  * Examples:
- * 
+ *
  * * `'/hello/'` - Matches only if the path is exactly '/hello/'. There is no special treatment for
  *   trailing slashes, and patterns have to match the entire path, not just a prefix.
  * * `'/user/:id'` - Matches '/user/bob' or '/user/1234!!!' or even '/user/' but not '/user' or
@@ -49674,7 +49674,7 @@ var $$UMFP; // reference to $UrlMatcherFactoryProvider
  *
  * @property {string} sourceSearch  The search portion of the source property
  *
- * @property {string} regex  The constructed regex that will be used to match against the url when 
+ * @property {string} regex  The constructed regex that will be used to match against the url when
  *   it is time to determine which url will match.
  *
  * @returns {Object}  New `UrlMatcher` object
@@ -49889,7 +49889,7 @@ UrlMatcher.prototype.exec = function (path, searchParams) {
  *
  * @description
  * Returns the names of all path and search parameters of this pattern in an unspecified order.
- * 
+ *
  * @returns {Array.<string>}  An array of parameter names. Must be treated as read-only. If the
  *    pattern has no parameters, an empty array is returned.
  */
@@ -50657,9 +50657,9 @@ angular.module('ui.router.util').run(['$urlMatcherFactory', function($urlMatcher
  * @requires $locationProvider
  *
  * @description
- * `$urlRouterProvider` has the responsibility of watching `$location`. 
- * When `$location` changes it runs through a list of rules one by one until a 
- * match is found. `$urlRouterProvider` is used behind the scenes anytime you specify 
+ * `$urlRouterProvider` has the responsibility of watching `$location`.
+ * When `$location` changes it runs through a list of rules one by one until a
+ * match is found. `$urlRouterProvider` is used behind the scenes anytime you specify
  * a url in a state configuration. All urls are compiled into a UrlMatcher object.
  *
  * There are several methods on `$urlRouterProvider` that make it useful to use directly
@@ -50744,8 +50744,8 @@ function $UrlRouterProvider(   $locationProvider,   $urlMatcherFactory) {
    * });
    * </pre>
    *
-   * @param {string|object} rule The url path you want to redirect to or a function 
-   * rule that returns the url path. The function version is passed two params: 
+   * @param {string|object} rule The url path you want to redirect to or a function
+   * rule that returns the url path. The function version is passed two params:
    * `$injector` and `$location` services, and must return a url string.
    *
    * @return {object} `$urlRouterProvider` - `$urlRouterProvider` instance
@@ -51039,7 +51039,7 @@ function $UrlRouterProvider(   $locationProvider,   $urlMatcherFactory) {
         if (angular.isObject(isHtml5)) {
           isHtml5 = isHtml5.enabled;
         }
-        
+
         var url = urlMatcher.format(params);
         options = options || {};
 
@@ -51103,7 +51103,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
       return compositeName ? findState(compositeName[1]) : root;
     },
 
-    // inherit 'data' from parent and override by own values (if any)
+    // inherit 'models' from parent and override by own values (if any)
     data: function(state) {
       if (state.parent && state.parent.data) {
         state.data = state.self.data = extend({}, state.parent.data, state.data);
@@ -51187,7 +51187,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
     if (path) {
       if (!base) throw new Error("No reference point given for path '"  + name + "'");
       base = findState(base);
-      
+
       var rel = name.split("."), i = 0, pathLength = rel.length, current = base;
 
       for (; i < pathLength; i++) {
@@ -51322,9 +51322,9 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    * @methodOf ui.router.state.$stateProvider
    *
    * @description
-   * Allows you to extend (carefully) or override (at your own peril) the 
-   * `stateBuilder` object used internally by `$stateProvider`. This can be used 
-   * to add custom functionality to ui-router, for example inferring templateUrl 
+   * Allows you to extend (carefully) or override (at your own peril) the
+   * `stateBuilder` object used internally by `$stateProvider`. This can be used
+   * to add custom functionality to ui-router, for example inferring templateUrl
    * based on the state name.
    *
    * When passing only a name, it returns the current (original or decorated) builder
@@ -51333,39 +51333,39 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    * The builder functions that can be decorated are listed below. Though not all
    * necessarily have a good use case for decoration, that is up to you to decide.
    *
-   * In addition, users can attach custom decorators, which will generate new 
-   * properties within the state's internal definition. There is currently no clear 
-   * use-case for this beyond accessing internal states (i.e. $state.$current), 
-   * however, expect this to become increasingly relevant as we introduce additional 
+   * In addition, users can attach custom decorators, which will generate new
+   * properties within the state's internal definition. There is currently no clear
+   * use-case for this beyond accessing internal states (i.e. $state.$current),
+   * however, expect this to become increasingly relevant as we introduce additional
    * meta-programming features.
    *
-   * **Warning**: Decorators should not be interdependent because the order of 
-   * execution of the builder functions in non-deterministic. Builder functions 
+   * **Warning**: Decorators should not be interdependent because the order of
+   * execution of the builder functions in non-deterministic. Builder functions
    * should only be dependent on the state definition object and super function.
    *
    *
    * Existing builder functions and current return values:
    *
    * - **parent** `{object}` - returns the parent state object.
-   * - **data** `{object}` - returns state data, including any inherited data that is not
+   * - **models** `{object}` - returns state models, including any inherited models that is not
    *   overridden by own values (if any).
    * - **url** `{object}` - returns a {@link ui.router.util.type:UrlMatcher UrlMatcher}
    *   or `null`.
-   * - **navigable** `{object}` - returns closest ancestor state that has a URL (aka is 
+   * - **navigable** `{object}` - returns closest ancestor state that has a URL (aka is
    *   navigable).
-   * - **params** `{object}` - returns an array of state params that are ensured to 
+   * - **params** `{object}` - returns an array of state params that are ensured to
    *   be a super-set of parent's params.
-   * - **views** `{object}` - returns a views object where each key is an absolute view 
-   *   name (i.e. "viewName@stateName") and each value is the config object 
-   *   (template, controller) for the view. Even when you don't use the views object 
+   * - **views** `{object}` - returns a views object where each key is an absolute view
+   *   name (i.e. "viewName@stateName") and each value is the config object
+   *   (template, controller) for the view. Even when you don't use the views object
    *   explicitly on a state config, one is still created for you internally.
-   *   So by decorating this builder function you have access to decorating template 
+   *   So by decorating this builder function you have access to decorating template
    *   and controller properties.
-   * - **ownParams** `{object}` - returns an array of params that belong to the state, 
+   * - **ownParams** `{object}` - returns an array of params that belong to the state,
    *   not including any params defined by ancestor states.
-   * - **path** `{string}` - returns the full path from the root down to this state. 
+   * - **path** `{string}` - returns the full path from the root down to this state.
    *   Needed for state activation.
-   * - **includes** `{object}` - returns an object that includes every state that 
+   * - **includes** `{object}` - returns an object that includes every state that
    *   would pass a `$state.includes()` test.
    *
    * @example
@@ -51398,8 +51398,8 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    * // and /partials/home/contact/item.html, respectively.
    * </pre>
    *
-   * @param {string} name The name of the builder function to decorate. 
-   * @param {object} func A function that is responsible for decorating the original 
+   * @param {string} name The name of the builder function to decorate.
+   * @param {object} func A function that is responsible for decorating the original
    * builder function. The function receives two parameters:
    *
    *   - `{object}` - state - The state config object.
@@ -51438,9 +51438,9 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    * @param {string|function=} stateConfig.template
    * <a id='template'></a>
    *   html template as a string or a function that returns
-   *   an html template as a string which should be used by the uiView directives. This property 
+   *   an html template as a string which should be used by the uiView directives. This property
    *   takes precedence over templateUrl.
-   *   
+   *
    *   If `template` is a function, it will be called with the following parameters:
    *
    *   - {array.&lt;object&gt;} - state parameters extracted from the current $location.path() by
@@ -51458,10 +51458,10 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    *
    *   path or function that returns a path to an html
    *   template that should be used by uiView.
-   *   
+   *
    *   If `templateUrl` is a function, it will be called with the following parameters:
    *
-   *   - {array.&lt;object&gt;} - state parameters extracted from the current $location.path() by 
+   *   - {array.&lt;object&gt;} - state parameters extracted from the current $location.path() by
    *     applying the current state
    *
    * <pre>templateUrl: "home.html"</pre>
@@ -51486,7 +51486,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    * <pre>controller:
    *     "MyRegisteredController as fooCtrl"}</pre>
    * <pre>controller: function($scope, MyService) {
-   *     $scope.data = MyService.getData(); }</pre>
+   *     $scope.models = MyService.getData(); }</pre>
    *
    * @param {function=} stateConfig.controllerProvider
    * <a id='controllerProvider'></a>
@@ -51505,7 +51505,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    *
    * @param {string=} stateConfig.controllerAs
    * <a id='controllerAs'></a>
-   * 
+   *
    * A controller alias name. If present the controller will be
    *   published to scope under the controllerAs name.
    * <pre>controllerAs: "myCtrl"</pre>
@@ -51514,17 +51514,17 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    * <a id='resolve'></a>
    *
    * An optional map&lt;string, function&gt; of dependencies which
-   *   should be injected into the controller. If any of these dependencies are promises, 
+   *   should be injected into the controller. If any of these dependencies are promises,
    *   the router will wait for them all to be resolved before the controller is instantiated.
    *   If all the promises are resolved successfully, the $stateChangeSuccess event is fired
    *   and the values of the resolved promises are injected into any controllers that reference them.
    *   If any  of the promises are rejected the $stateChangeError event is fired.
    *
    *   The map object is:
-   *   
+   *
    *   - key - {string}: name of dependency to be injected into controller
-   *   - factory - {string|function}: If string then it is alias for service. Otherwise if function, 
-   *     it is injected and return value it treated as dependency. If result is a promise, it is 
+   *   - factory - {string|function}: If string then it is alias for service. Otherwise if function,
+   *     it is injected and return value it treated as dependency. If result is a promise, it is
    *     resolved before its value is injected into controller.
    *
    * <pre>resolve: {
@@ -51538,7 +51538,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    * <a id='url'></a>
    *
    *   A url fragment with optional parameters. When a state is navigated or
-   *   transitioned to, the `$stateParams` service will be populated with any 
+   *   transitioned to, the `$stateParams` service will be populated with any
    *   parameters that were passed.
    *
    * examples:
@@ -51617,18 +51617,18 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    * <a id='reloadOnSearch'></a>
    *
    * If `false`, will not retrigger the same state
-   *   just because a search/query parameter has changed (via $location.search() or $location.hash()). 
+   *   just because a search/query parameter has changed (via $location.search() or $location.hash()).
    *   Useful for when you'd like to modify $location.search() without triggering a reload.
    * <pre>reloadOnSearch: false</pre>
    *
-   * @param {object=} stateConfig.data
-   * <a id='data'></a>
+   * @param {object=} stateConfig.models
+   * <a id='models'></a>
    *
-   * Arbitrary data object, useful for custom configuration.  The parent state's `data` is
-   *   prototypally inherited.  In other words, adding a data property to a state adds it to
+   * Arbitrary models object, useful for custom configuration.  The parent state's `models` is
+   *   prototypally inherited.  In other words, adding a models property to a state adds it to
    *   the entire subtree via prototypal inheritance.
    *
-   * <pre>data: {
+   * <pre>models: {
    *     requiredRole: 'foo'
    * } </pre>
    *
@@ -51752,11 +51752,11 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
    * @requires ui.router.state.$stateParams
    * @requires ui.router.router.$urlRouter
    *
-   * @property {object} params A param object, e.g. {sectionId: section.id)}, that 
+   * @property {object} params A param object, e.g. {sectionId: section.id)}, that
    * you'd like to test against the current active state.
-   * @property {object} current A reference to the state's config object. However 
-   * you passed it in. Useful for accessing custom data.
-   * @property {object} transition Currently pending transition. A promise that'll 
+   * @property {object} current A reference to the state's config object. However
+   * you passed it in. Useful for accessing custom models.
+   * @property {object} transition Currently pending transition. A promise that'll
    * resolve or reject.
    *
    * @description
@@ -51853,7 +51853,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
      * @methodOf ui.router.state.$state
      *
      * @description
-     * A method that force reloads the current state. All resolves are re-resolved, events are not re-fired, 
+     * A method that force reloads the current state. All resolves are re-resolved, events are not re-fired,
      * and controllers reinstantiated (bug with controllers reinstantiating right now, fixing soon).
      *
      * @example
@@ -51869,7 +51869,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
      *
      * `reload()` is just an alias for:
      * <pre>
-     * $state.transitionTo($state.current, $stateParams, { 
+     * $state.transitionTo($state.current, $stateParams, {
      *   reload: true, inherit: false, notify: true
      * });
      * </pre>
@@ -51887,11 +51887,11 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
      * @methodOf ui.router.state.$state
      *
      * @description
-     * Convenience method for transitioning to a new state. `$state.go` calls 
-     * `$state.transitionTo` internally but automatically sets options to 
-     * `{ location: true, inherit: true, relative: $state.$current, notify: true }`. 
-     * This allows you to easily use an absolute or relative to path and specify 
-     * only the parameters you'd like to update (while letting unspecified parameters 
+     * Convenience method for transitioning to a new state. `$state.go` calls
+     * `$state.transitionTo` internally but automatically sets options to
+     * `{ location: true, inherit: true, relative: $state.$current, notify: true }`.
+     * This allows you to easily use an absolute or relative to path and specify
+     * only the parameters you'd like to update (while letting unspecified parameters
      * inherit from the currently active ancestor states).
      *
      * @example
@@ -51913,8 +51913,8 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
      * - `$state.go('^.sibling')` - will go to a sibling state
      * - `$state.go('.child.grandchild')` - will go to grandchild state
      *
-     * @param {object=} params A map of the parameters that will be sent to the state, 
-     * will populate $stateParams. Any parameters that are not specified will be inherited from currently 
+     * @param {object=} params A map of the parameters that will be sent to the state,
+     * will populate $stateParams. Any parameters that are not specified will be inherited from currently
      * defined parameters. This allows, for example, going to a sibling state that shares parameters
      * specified in a parent state. Parameter inheritance only works between common ancestor states, I.e.
      * transitioning to a sibling will get you the parameters for all parents, transitioning to a child
@@ -51924,10 +51924,10 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
      * - **`location`** - {boolean=true|string=} - If `true` will update the url in the location bar, if `false`
      *    will not. If string, must be `"replace"`, which will update url and also replace last history record.
      * - **`inherit`** - {boolean=true}, If `true` will inherit url parameters from current url.
-     * - **`relative`** - {object=$state.$current}, When transitioning with relative path (e.g '^'), 
+     * - **`relative`** - {object=$state.$current}, When transitioning with relative path (e.g '^'),
      *    defines which state to be relative from.
      * - **`notify`** - {boolean=true}, If `true` will broadcast $stateChangeStart and $stateChangeSuccess events.
-     * - **`reload`** (v0.2.5) - {boolean=false}, If `true` will force transition even if the state or params 
+     * - **`reload`** (v0.2.5) - {boolean=false}, If `true` will force transition even if the state or params
      *    have not changed, aka a reload of the same state. It differs from reloadOnSearch because you'd
      *    use this when you want to force a reload when *everything* is the same, including search params.
      *
@@ -51979,10 +51979,10 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
      * - **`location`** - {boolean=true|string=} - If `true` will update the url in the location bar, if `false`
      *    will not. If string, must be `"replace"`, which will update url and also replace last history record.
      * - **`inherit`** - {boolean=false}, If `true` will inherit url parameters from current url.
-     * - **`relative`** - {object=}, When transitioning with relative path (e.g '^'), 
+     * - **`relative`** - {object=}, When transitioning with relative path (e.g '^'),
      *    defines which state to be relative from.
      * - **`notify`** - {boolean=true}, If `true` will broadcast $stateChangeStart and $stateChangeSuccess events.
-     * - **`reload`** (v0.2.5) - {boolean=false}, If `true` will force transition even if the state or params 
+     * - **`reload`** (v0.2.5) - {boolean=false}, If `true` will force transition even if the state or params
      *    have not changed, aka a reload of the same state. It differs from reloadOnSearch because you'd
      *    use this when you want to force a reload when *everything* is the same, including search params.
      *
@@ -52329,10 +52329,10 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
      *    first parameter, then the constructed href url will be built from the first navigable ancestor (aka
      *    ancestor with a valid url).
      * - **`inherit`** - {boolean=true}, If `true` will inherit url parameters from current url.
-     * - **`relative`** - {object=$state.$current}, When transitioning with relative path (e.g '^'), 
+     * - **`relative`** - {object=$state.$current}, When transitioning with relative path (e.g '^'),
      *    defines which state to be relative from.
      * - **`absolute`** - {boolean=false},  If true will generate an absolute url, e.g. "http://www.example.com/fullurl".
-     * 
+     *
      * @returns {string} compiled state url
      */
     $state.href = function href(stateOrName, params, options) {
@@ -52347,7 +52347,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
 
       if (!isDefined(state)) return null;
       if (options.inherit) params = inheritParams($stateParams, params || {}, $state.$current, state);
-      
+
       var nav = (state && options.lossy) ? state.navigable : state;
 
       if (!nav || nav.url === undefined || nav.url === null) {
@@ -52590,26 +52590,26 @@ angular.module('ui.router.state').provider('$uiViewScroll', $ViewScrollProvider)
  * functionality, call `$uiViewScrollProvider.useAnchorScroll()`.*
  *
  * @param {string=} onload Expression to evaluate whenever the view updates.
- * 
+ *
  * @example
- * A view can be unnamed or named. 
+ * A view can be unnamed or named.
  * <pre>
  * <!-- Unnamed -->
- * <div ui-view></div> 
- * 
+ * <div ui-view></div>
+ *
  * <!-- Named -->
  * <div ui-view="viewName"></div>
  * </pre>
  *
- * You can only have one unnamed view within any template (or root html). If you are only using a 
+ * You can only have one unnamed view within any template (or root html). If you are only using a
  * single view and it is unnamed then you can populate it like so:
  * <pre>
- * <div ui-view></div> 
+ * <div ui-view></div>
  * $stateProvider.state("home", {
  *   template: "<h1>HELLO!</h1>"
  * })
  * </pre>
- * 
+ *
  * The above is a convenient shortcut equivalent to specifying your view explicitly with the {@link ui.router.state.$stateProvider#views `views`}
  * config property, by name, in this case an empty name:
  * <pre>
@@ -52618,33 +52618,33 @@ angular.module('ui.router.state').provider('$uiViewScroll', $ViewScrollProvider)
  *     "": {
  *       template: "<h1>HELLO!</h1>"
  *     }
- *   }    
+ *   }
  * })
  * </pre>
- * 
- * But typically you'll only use the views property if you name your view or have more than one view 
- * in the same template. There's not really a compelling reason to name a view if its the only one, 
+ *
+ * But typically you'll only use the views property if you name your view or have more than one view
+ * in the same template. There's not really a compelling reason to name a view if its the only one,
  * but you could if you wanted, like so:
  * <pre>
  * <div ui-view="main"></div>
- * </pre> 
+ * </pre>
  * <pre>
  * $stateProvider.state("home", {
  *   views: {
  *     "main": {
  *       template: "<h1>HELLO!</h1>"
  *     }
- *   }    
+ *   }
  * })
  * </pre>
- * 
+ *
  * Really though, you'll use views to set up multiple views:
  * <pre>
  * <div ui-view></div>
- * <div ui-view="chart"></div> 
- * <div ui-view="data"></div> 
+ * <div ui-view="chart"></div>
+ * <div ui-view="models"></div>
  * </pre>
- * 
+ *
  * <pre>
  * $stateProvider.state("home", {
  *   views: {
@@ -52654,10 +52654,10 @@ angular.module('ui.router.state').provider('$uiViewScroll', $ViewScrollProvider)
  *     "chart": {
  *       template: "<chart_thing/>"
  *     },
- *     "data": {
+ *     "models": {
  *       template: "<data_thing/>"
  *     }
- *   }    
+ *   }
  * })
  * </pre>
  *
@@ -52891,17 +52891,17 @@ function stateContext(el) {
  * @restrict A
  *
  * @description
- * A directive that binds a link (`<a>` tag) to a state. If the state has an associated 
- * URL, the directive will automatically generate & update the `href` attribute via 
- * the {@link ui.router.state.$state#methods_href $state.href()} method. Clicking 
- * the link will trigger a state transition with optional parameters. 
+ * A directive that binds a link (`<a>` tag) to a state. If the state has an associated
+ * URL, the directive will automatically generate & update the `href` attribute via
+ * the {@link ui.router.state.$state#methods_href $state.href()} method. Clicking
+ * the link will trigger a state transition with optional parameters.
  *
- * Also middle-clicking, right-clicking, and ctrl-clicking on the link will be 
+ * Also middle-clicking, right-clicking, and ctrl-clicking on the link will be
  * handled natively by the browser.
  *
- * You can also use relative state paths within ui-sref, just like the relative 
+ * You can also use relative state paths within ui-sref, just like the relative
  * paths passed to `$state.go()`. You just need to be aware that the path is relative
- * to the state that the link lives in, in other words the state that loaded the 
+ * to the state that the link lives in, in other words the state that loaded the
  * template containing the link.
  *
  * You can specify options to pass to {@link ui.router.state.$state#go $state.go()}
@@ -52909,22 +52909,22 @@ function stateContext(el) {
  * and `reload`.
  *
  * @example
- * Here's an example of how you'd use ui-sref and how it would compile. If you have the 
+ * Here's an example of how you'd use ui-sref and how it would compile. If you have the
  * following template:
  * <pre>
  * <a ui-sref="home">Home</a> | <a ui-sref="about">About</a> | <a ui-sref="{page: 2}">Next page</a>
- * 
+ *
  * <ul>
  *     <li ng-repeat="contact in contacts">
  *         <a ui-sref="contacts.detail({ id: contact.id })">{{ contact.name }}</a>
  *     </li>
  * </ul>
  * </pre>
- * 
+ *
  * Then the compiled html would be (assuming Html5Mode is off and current state is contacts):
  * <pre>
  * <a href="#/home" ui-sref="home">Home</a> | <a href="#/about" ui-sref="about">About</a> | <a href="#/contacts?page=2" ui-sref="{page: 2}">Next page</a>
- * 
+ *
  * <ul>
  *     <li ng-repeat="contact in contacts">
  *         <a href="#/contacts/1" ui-sref="contacts.detail({ id: contact.id })">Joe</a>
@@ -53911,7 +53911,7 @@ function($rootScope, $state, $location, $window, $timeout, $ionicViewSwitcher, $
 
     if (!viewHistory.histories[ histObj.historyId ]) {
       // this history object exists in parent scope, but doesn't
-      // exist in the history data yet
+      // exist in the history models yet
       viewHistory.histories[ histObj.historyId ] = {
         historyId: histObj.historyId,
         parentHistoryId: getParentHistoryObj(histObj.scope.$parent).historyId,
@@ -54246,9 +54246,9 @@ function($rootScope, $state, $location, $window, $timeout, $ionicViewSwitcher, $
     /**
      * @ngdoc method
      * @name $ionicHistory#viewHistory
-     * @description The app's view history data, such as all the views and histories, along
+     * @description The app's view history models, such as all the views and histories, along
      * with how they are ordered and linked together within the navigation stack.
-     * @returns {object} Returns an object containing the apps view history data.
+     * @returns {object} Returns an object containing the apps view history models.
      */
     viewHistory: function() {
       return viewHistory;
@@ -54776,7 +54776,7 @@ function($rootScope, $state, $location, $document, $ionicPlatform, $ionicHistory
  * @ngdoc method
  * @name $ionicConfigProvider#views.forwardCache
  * @description  By default, when navigating, views that were recently visited are cached, and
- * the same instance data and DOM elements are referenced when navigating back. However, when
+ * the same instance models and DOM elements are referenced when navigating back. However, when
  * navigating back in the history, the "forward" views are removed from the cache. If you
  * navigate forward to the same view again, it'll create a new DOM element and controller
  * instance. Basically, any forward views are reset each time. Set this config to `true` to have
@@ -56516,11 +56516,11 @@ var POPUP_TPL =
  *
  * // Triggered on a button click, or some other target
  * $scope.showPopup = function() {
- *   $scope.data = {};
+ *   $scope.models = {};
  *
  *   // An elaborate, custom popup
  *   var myPopup = $ionicPopup.show({
- *     template: '<input type="password" ng-model="data.wifi">',
+ *     template: '<input type="password" ng-model="models.wifi">',
  *     title: 'Enter Wi-Fi Password',
  *     subTitle: 'Please use normal things',
  *     scope: $scope,
@@ -56530,11 +56530,11 @@ var POPUP_TPL =
  *         text: '<b>Save</b>',
  *         type: 'button-positive',
  *         onTap: function(e) {
- *           if (!$scope.data.wifi) {
+ *           if (!$scope.models.wifi) {
  *             //don't allow the user to close unless he enters wifi password
  *             e.preventDefault();
  *           } else {
- *             return $scope.data.wifi;
+ *             return $scope.models.wifi;
  *           }
  *         }
  *       }
@@ -56636,7 +56636,7 @@ function($ionicTemplateLoader, $ionicBackdrop, $q, $timeout, $rootScope, $ionicB
      *     type: 'button-positive',
      *     onTap: function(e) {
      *       // Returning a value will cause the promise to resolve with the given value.
-     *       return scope.data.response;
+     *       return scope.models.response;
      *     }
      *   }]
      * }
@@ -56954,10 +56954,10 @@ function($ionicTemplateLoader, $ionicBackdrop, $q, $timeout, $rootScope, $ionicB
       delete opts.template;
     }
     return showPopup(extend({
-      template: text + '<input ng-model="data.response" '
-        + 'type="{{ data.fieldtype }}"'
-        + 'maxlength="{{ data.maxlength }}"'
-        + 'placeholder="{{ data.placeholder }}"'
+      template: text + '<input ng-model="models.response" '
+        + 'type="{{ models.fieldtype }}"'
+        + 'maxlength="{{ models.maxlength }}"'
+        + 'placeholder="{{ models.placeholder }}"'
         + '>',
       scope: scope,
       buttons: [{
@@ -58255,7 +58255,7 @@ function($timeout, $document, $q, $ionicClickBlock, $ionicConfig, $ionicNavBarDe
     // 1) attribute directive on the button/link to this view
     // 2) entering element's attribute
     // 3) entering view's $state config property
-    // 4) view registration data
+    // 4) view registration models
     // 5) global config
     // 6) fallback value
 
@@ -58447,8 +58447,8 @@ angular.module('ngIOS9UIWebViewPatch', ['ng']).config(['$provide', function($pro
 
 /**
  * @private
- * Parts of Ionic requires that $scope data is attached to the element.
- * We do not want to disable adding $scope data to the $element when
+ * Parts of Ionic requires that $scope models is attached to the element.
+ * We do not want to disable adding $scope models to the $element when
  * $compileProvider.debugInfoEnabled(false) is used.
  */
 IonicModule.config(['$provide', function($provide) {
@@ -60070,7 +60070,7 @@ function($scope, $element, $attrs, $compile, $controller, $ionicNavBarDelegate, 
         var releaseSwipeCompletion = getSwipeCompletion(releaseX);
         var velocity = Math.abs(startDrag.x - releaseX) / (now - startDrag.t);
 
-        // private variables because ui-router has no way to pass custom data using $state.go
+        // private variables because ui-router has no way to pass custom models using $state.go
         disableRenderStartViewId = backView.viewId;
         disableAnimation = (releaseSwipeCompletion < 0.03 || releaseSwipeCompletion > 0.97);
 
@@ -61152,7 +61152,7 @@ function($scope, $attrs, $ionicSideMenuDelegate, $ionicPlatform, $ionicBody, $io
       menuEnabled &&
       !e.target.tagName.match(/input|textarea|select|object|embed/i) &&
       !e.target.isContentEditable &&
-      !(e.target.dataset ? e.target.dataset.preventScroll : e.target.getAttribute('data-prevent-scroll') == 'true');
+      !(e.target.dataset ? e.target.dataset.preventScroll : e.target.getAttribute('models-prevent-scroll') == 'true');
   };
 
   $scope.sideMenuContentTranslateX = 0;
@@ -62047,11 +62047,11 @@ IonicModule
  *
  * **The Basics**:
  *
- * - The data given to collection-repeat must be an array.
+ * - The models given to collection-repeat must be an array.
  * - If the `item-height` and `item-width` attributes are not supplied, it will be assumed that
  *   every item in the list has the same dimensions as the first item.
  * - Don't use angular one-time binding (`::`) with collection-repeat. The scope of each item is
- *   assigned new data and re-digested as you scroll. Bindings need to update, and one-time bindings
+ *   assigned new models and re-digested as you scroll. Bindings need to update, and one-time bindings
  *   won't.
  *
  * **Performance Tips**:
@@ -62115,7 +62115,7 @@ IonicModule
 .directive('collectionRepeat', CollectionRepeatDirective)
 .factory('$ionicCollectionManager', RepeatManagerFactory);
 
-var ONE_PX_TRANSPARENT_IMG_SRC = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+var ONE_PX_TRANSPARENT_IMG_SRC = 'models:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 var WIDTH_HEIGHT_REGEX = /height:.*?px;\s*width:.*?px/;
 var DEFAULT_RENDER_BUFFER = 3;
 
@@ -62172,7 +62172,7 @@ function CollectionRepeatDirective($ionicCollectionManager, $parse, $window, $$r
     var changeValidator = makeChangeValidator();
     initDimensions();
 
-    // Dimensions are refreshed on resize or data change.
+    // Dimensions are refreshed on resize or models change.
     scrollCtrl.$element.on('scroll-resize', refreshDimensions);
 
     angular.element($window).on('resize', onResize);
@@ -62221,7 +62221,7 @@ function CollectionRepeatDirective($ionicCollectionManager, $parse, $window, $$r
         dataLength: 0,
         width: 0,
         height: 0,
-        // A resize triggers a refresh only if we have data, the scrollView has size,
+        // A resize triggers a refresh only if we have models, the scrollView has size,
         // and the size has changed.
         resizeRequiresRefresh: function(newWidth, newHeight) {
           var requiresRefresh = self.dataLength && newWidth && newHeight &&
@@ -62232,7 +62232,7 @@ function CollectionRepeatDirective($ionicCollectionManager, $parse, $window, $$r
 
           return !!requiresRefresh;
         },
-        // A change in data only triggers a refresh if the data has length, or if the data's
+        // A change in models only triggers a refresh if the models has length, or if the models's
         // length is less than before.
         dataChangeRequiresRefresh: function(newData) {
           var requiresRefresh = newData.length > 0 || newData.length < self.dataLength;
@@ -62529,7 +62529,7 @@ function RepeatManagerFactory($rootScope, $window, $$rAF) {
         estimatedHeight = heightGetter(0, data[0]);
         estimatedWidth = widthGetter(0, data[0]);
       } else {
-        // If we don't have any data in our array, just guess.
+        // If we don't have any models in our array, just guess.
         estimatedHeight = 100;
         estimatedWidth = 100;
       }
@@ -62583,7 +62583,7 @@ function RepeatManagerFactory($rootScope, $window, $$rAF) {
 
       isLayoutReady = true;
       if (isLayoutReady && isDataReady) {
-        // If the resize or latest data change caused the scrollValue to
+        // If the resize or latest models change caused the scrollValue to
         // now be out of bounds, resize the scrollView.
         if (scrollView.__scrollLeft > scrollView.__maxScrollLeft ||
             scrollView.__scrollTop > scrollView.__maxScrollTop) {
@@ -62651,7 +62651,7 @@ function RepeatManagerFactory($rootScope, $window, $$rAF) {
       // one frame, causing visible jank.
       // DON'T call any other functions inside this loop unless it's vital.
       for (i = renderStartIndex; i <= renderEndIndex; i++) {
-        // We only go forward with render if the index is in data, the item isn't already shown,
+        // We only go forward with render if the index is in models, the item isn't already shown,
         // or forceRerender is on.
         if (i >= data.length || (itemsShownMap[i] && !forceRerender)) continue;
 
@@ -62923,7 +62923,7 @@ function RepeatManagerFactory($rootScope, $window, $$rAF) {
       this.onRefreshData = function() {
         var i;
         var ii;
-        // Make sure dimensions has as many items as data.length.
+        // Make sure dimensions has as many items as models.length.
         // This is to be sure we don't have to allocate objects while scrolling.
         for (i = dimensions.length, ii = data.length; i < ii; i++) {
           dimensions.push({});
@@ -63085,7 +63085,7 @@ function($timeout, $controller, $ionicBind, $ionicConfig) {
       element.addClass('scroll-content ionic-scroll');
 
       if (attr.scroll != 'false') {
-        //We cannot use normal transclude here because it breaks element.data()
+        //We cannot use normal transclude here because it breaks element.models()
         //inheritance on compile
         innerElement = jqLite('<div class="scroll"></div>');
         innerElement.append(element.contents());
@@ -63782,7 +63782,7 @@ function headerFooterBarDirective(isHeader) {
  *
  * The expression you pass in for `on-infinite` is called when the user scrolls
  * greater than `distance` away from the bottom of the content.  Once `on-infinite`
- * is done loading new data, it should broadcast the `scroll.infiniteScrollComplete`
+ * is done loading new models, it should broadcast the `scroll.infiniteScrollComplete`
  * event from your controller (see below example).
  *
  * @param {expression} on-infinite What to call when the scroller reaches the
@@ -63825,7 +63825,7 @@ function headerFooterBarDirective(isHeader) {
  * }
  * ```
  *
- * An easy to way to stop infinite scroll once there is no more data to load
+ * An easy to way to stop infinite scroll once there is no more models to load
  * is to use angular's `ng-if` directive:
  *
  * ```html
@@ -64263,7 +64263,7 @@ IonicModule.directive('ionOptionButton', [function() {
 }]);
 
 var ITEM_TPL_REORDER_BUTTON =
-  '<div data-prevent-scroll="true" class="item-right-edit item-reorder enable-pointer-events">' +
+  '<div models-prevent-scroll="true" class="item-right-edit item-reorder enable-pointer-events">' +
   '</div>';
 
 /**
@@ -64318,7 +64318,7 @@ IonicModule
     priority: Number.MAX_VALUE,
     compile: function($element, $attr) {
       $attr.$set('class', ($attr['class'] || '') + ' button icon button-icon', true);
-      $element[0].setAttribute('data-prevent-scroll', true);
+      $element[0].setAttribute('models-prevent-scroll', true);
       return function($scope, $element, $attr, ctrls) {
         var itemCtrl = ctrls[0];
         var listCtrl = ctrls[1];
@@ -65218,7 +65218,7 @@ IonicModule
  * to control the views. However, the AngularUI Router provides a more powerful
  * state manager in that states are bound to named, nested, and parallel views,
  * allowing more than one template to be rendered on the same page.
- * Additionally, each state is not required to be bound to a URL, and data can
+ * Additionally, each state is not required to be bound to a URL, and models can
  * be pushed to each state which allows much flexibility.
  *
  * The ionNavView directive is used to render templates in your application. Each template
@@ -65746,7 +65746,7 @@ function($timeout, $controller, $ionicBind, $ionicConfig) {
     compile: function(element, attr) {
       element.addClass('scroll-view ionic-scroll');
 
-      //We cannot transclude here because it breaks element.data() inheritance on compile
+      //We cannot transclude here because it breaks element.models() inheritance on compile
       var innerElement = jqLite('<div class="scroll"></div>');
       innerElement.append(element.contents());
       element.append(innerElement);
@@ -66492,7 +66492,7 @@ function($animate, $timeout, $compile, $ionicSlideBoxDelegate, $ionicHistory, $i
  * @usage
  * ```html
  * <ion-content scroll="false">
- *   <ion-slides  options="options" slider="data.slider">
+ *   <ion-slides  options="options" slider="models.slider">
  *     <ion-slide-page>
  *       <div class="box blue"><h1>BLUE</h1></div>
  *     </ion-slide-page>
@@ -66513,19 +66513,19 @@ function($animate, $timeout, $compile, $ionicSlideBoxDelegate, $ionicHistory, $i
  *   speed: 500,
  * }
  *
- * $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
- *   // data.slider is the instance of Swiper
- *   $scope.slider = data.slider;
+ * $scope.$on("$ionicSlides.sliderInitialized", function(event, models){
+ *   // models.slider is the instance of Swiper
+ *   $scope.slider = models.slider;
  * });
  *
- * $scope.$on("$ionicSlides.slideChangeStart", function(event, data){
+ * $scope.$on("$ionicSlides.slideChangeStart", function(event, models){
  *   console.log('Slide change is beginning');
  * });
  *
- * $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
+ * $scope.$on("$ionicSlides.slideChangeEnd", function(event, models){
  *   // note: the indexes are 0-based
- *   $scope.activeIndex = data.slider.activeIndex;
- *   $scope.previousIndex = data.slider.previousIndex;
+ *   $scope.activeIndex = models.slider.activeIndex;
+ *   $scope.previousIndex = models.slider.previousIndex;
  * });
  *
  * ```
@@ -66551,18 +66551,18 @@ function($animate, $timeout, $compile, $ionicSlideBoxDelegate, $ionicHistory, $i
  *
  *
  * ## Updating Slides Dynamically
- * When applying data to the slider at runtime, typically everything will work as expected.
+ * When applying models to the slider at runtime, typically everything will work as expected.
  *
  * In the event that the slides are looped, use the `updateLoop` method on the slider to ensure the slides update correctly.
  *
  * ```
- * $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
+ * $scope.$on("$ionicSlides.sliderInitialized", function(event, models){
  *   // grab an instance of the slider
- *   $scope.slider = data.slider;
+ *   $scope.slider = models.slider;
  * });
  *
  * function dataChangeHandler(){
- *   // call this function when data changes, such as an HTTP request, etc
+ *   // call this function when models changes, such as an HTTP request, etc
  *   if ( $scope.slider ){
  *     $scope.slider.updateLoop();
  *   }
@@ -67214,7 +67214,7 @@ function($ionicTabsDelegate, $ionicConfig) {
     scope: true,
     controller: '$ionicTabs',
     compile: function(tElement) {
-      //We cannot use regular transclude here because it breaks element.data()
+      //We cannot use regular transclude here because it breaks element.models()
       //inheritance on compile
       var innerElement = jqLite('<div class="tab-nav tabs">');
       innerElement.append(tElement.contents());
@@ -67446,8 +67446,8 @@ function($timeout, $ionicConfig) {
  * Views can be cached, which means ***controllers normally only load once***, which may
  * affect your controller logic. To know when a view has entered or left, events
  * have been added that are emitted from the view's scope. These events also
- * contain data about the view, such as the title and whether the back button should
- * show. Also contained is transition data, such as the transition type and
+ * contain models about the view, such as the title and whether the back button should
+ * show. Also contained is transition models, such as the transition type and
  * direction that will be or was used.
  *
  * Life cycle events are emitted upwards from the transitioning view's scope. In some cases, it is
@@ -67525,22 +67525,22 @@ function($timeout, $ionicConfig) {
  * ## LifeCycle Event Usage
  *
  * Below is an example of how to listen to life cycle events and
- * access state parameter data
+ * access state parameter models
  *
  * ```js
- * $scope.$on("$ionicView.beforeEnter", function(event, data){
+ * $scope.$on("$ionicView.beforeEnter", function(event, models){
  *    // handle event
- *    console.log("State Params: ", data.stateParams);
+ *    console.log("State Params: ", models.stateParams);
  * });
  *
- * $scope.$on("$ionicView.enter", function(event, data){
+ * $scope.$on("$ionicView.enter", function(event, models){
  *    // handle event
- *    console.log("State Params: ", data.stateParams);
+ *    console.log("State Params: ", models.stateParams);
  * });
  *
- * $scope.$on("$ionicView.afterEnter", function(event, data){
+ * $scope.$on("$ionicView.afterEnter", function(event, models){
  *    // handle event
- *    console.log("State Params: ", data.stateParams);
+ *    console.log("State Params: ", models.stateParams);
  * });
  * ```
  *

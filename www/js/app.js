@@ -35,12 +35,12 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       abstract: true,
       templateUrl: 'templates/tabs.html'
     })
-    .state('tab.dash', {
-      url: '/dash',
+    .state('tab.register', {
+      url: '/register',
       views: {
-        'tab-dash': {
-          templateUrl: 'templates/tab-dash.html',
-          controller: 'DashCtrl'
+        'tab-register': {
+          templateUrl: 'templates/tab-register.html',
+          controller: 'RegisterCtrl'
         }
       }
     })
@@ -65,6 +65,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
 
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/tab/dash');
+  $urlRouterProvider.otherwise('/tab/register');
 
 });

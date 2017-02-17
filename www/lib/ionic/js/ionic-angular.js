@@ -728,7 +728,7 @@ function($rootScope, $state, $location, $window, $timeout, $ionicViewSwitcher, $
 
     if (!viewHistory.histories[ histObj.historyId ]) {
       // this history object exists in parent scope, but doesn't
-      // exist in the history data yet
+      // exist in the history models yet
       viewHistory.histories[ histObj.historyId ] = {
         historyId: histObj.historyId,
         parentHistoryId: getParentHistoryObj(histObj.scope.$parent).historyId,
@@ -1063,9 +1063,9 @@ function($rootScope, $state, $location, $window, $timeout, $ionicViewSwitcher, $
     /**
      * @ngdoc method
      * @name $ionicHistory#viewHistory
-     * @description The app's view history data, such as all the views and histories, along
+     * @description The app's view history models, such as all the views and histories, along
      * with how they are ordered and linked together within the navigation stack.
-     * @returns {object} Returns an object containing the apps view history data.
+     * @returns {object} Returns an object containing the apps view history models.
      */
     viewHistory: function() {
       return viewHistory;
@@ -1593,7 +1593,7 @@ function($rootScope, $state, $location, $document, $ionicPlatform, $ionicHistory
  * @ngdoc method
  * @name $ionicConfigProvider#views.forwardCache
  * @description  By default, when navigating, views that were recently visited are cached, and
- * the same instance data and DOM elements are referenced when navigating back. However, when
+ * the same instance models and DOM elements are referenced when navigating back. However, when
  * navigating back in the history, the "forward" views are removed from the cache. If you
  * navigate forward to the same view again, it'll create a new DOM element and controller
  * instance. Basically, any forward views are reset each time. Set this config to `true` to have
@@ -3333,11 +3333,11 @@ var POPUP_TPL =
  *
  * // Triggered on a button click, or some other target
  * $scope.showPopup = function() {
- *   $scope.data = {};
+ *   $scope.models = {};
  *
  *   // An elaborate, custom popup
  *   var myPopup = $ionicPopup.show({
- *     template: '<input type="password" ng-model="data.wifi">',
+ *     template: '<input type="password" ng-model="models.wifi">',
  *     title: 'Enter Wi-Fi Password',
  *     subTitle: 'Please use normal things',
  *     scope: $scope,
@@ -3347,11 +3347,11 @@ var POPUP_TPL =
  *         text: '<b>Save</b>',
  *         type: 'button-positive',
  *         onTap: function(e) {
- *           if (!$scope.data.wifi) {
+ *           if (!$scope.models.wifi) {
  *             //don't allow the user to close unless he enters wifi password
  *             e.preventDefault();
  *           } else {
- *             return $scope.data.wifi;
+ *             return $scope.models.wifi;
  *           }
  *         }
  *       }
@@ -3453,7 +3453,7 @@ function($ionicTemplateLoader, $ionicBackdrop, $q, $timeout, $rootScope, $ionicB
      *     type: 'button-positive',
      *     onTap: function(e) {
      *       // Returning a value will cause the promise to resolve with the given value.
-     *       return scope.data.response;
+     *       return scope.models.response;
      *     }
      *   }]
      * }
@@ -3771,10 +3771,10 @@ function($ionicTemplateLoader, $ionicBackdrop, $q, $timeout, $rootScope, $ionicB
       delete opts.template;
     }
     return showPopup(extend({
-      template: text + '<input ng-model="data.response" '
-        + 'type="{{ data.fieldtype }}"'
-        + 'maxlength="{{ data.maxlength }}"'
-        + 'placeholder="{{ data.placeholder }}"'
+      template: text + '<input ng-model="models.response" '
+        + 'type="{{ models.fieldtype }}"'
+        + 'maxlength="{{ models.maxlength }}"'
+        + 'placeholder="{{ models.placeholder }}"'
         + '>',
       scope: scope,
       buttons: [{
@@ -5072,7 +5072,7 @@ function($timeout, $document, $q, $ionicClickBlock, $ionicConfig, $ionicNavBarDe
     // 1) attribute directive on the button/link to this view
     // 2) entering element's attribute
     // 3) entering view's $state config property
-    // 4) view registration data
+    // 4) view registration models
     // 5) global config
     // 6) fallback value
 
@@ -5264,8 +5264,8 @@ angular.module('ngIOS9UIWebViewPatch', ['ng']).config(['$provide', function($pro
 
 /**
  * @private
- * Parts of Ionic requires that $scope data is attached to the element.
- * We do not want to disable adding $scope data to the $element when
+ * Parts of Ionic requires that $scope models is attached to the element.
+ * We do not want to disable adding $scope models to the $element when
  * $compileProvider.debugInfoEnabled(false) is used.
  */
 IonicModule.config(['$provide', function($provide) {
@@ -6887,7 +6887,7 @@ function($scope, $element, $attrs, $compile, $controller, $ionicNavBarDelegate, 
         var releaseSwipeCompletion = getSwipeCompletion(releaseX);
         var velocity = Math.abs(startDrag.x - releaseX) / (now - startDrag.t);
 
-        // private variables because ui-router has no way to pass custom data using $state.go
+        // private variables because ui-router has no way to pass custom models using $state.go
         disableRenderStartViewId = backView.viewId;
         disableAnimation = (releaseSwipeCompletion < 0.03 || releaseSwipeCompletion > 0.97);
 
@@ -7969,7 +7969,7 @@ function($scope, $attrs, $ionicSideMenuDelegate, $ionicPlatform, $ionicBody, $io
       menuEnabled &&
       !e.target.tagName.match(/input|textarea|select|object|embed/i) &&
       !e.target.isContentEditable &&
-      !(e.target.dataset ? e.target.dataset.preventScroll : e.target.getAttribute('data-prevent-scroll') == 'true');
+      !(e.target.dataset ? e.target.dataset.preventScroll : e.target.getAttribute('models-prevent-scroll') == 'true');
   };
 
   $scope.sideMenuContentTranslateX = 0;
@@ -8864,11 +8864,11 @@ IonicModule
  *
  * **The Basics**:
  *
- * - The data given to collection-repeat must be an array.
+ * - The models given to collection-repeat must be an array.
  * - If the `item-height` and `item-width` attributes are not supplied, it will be assumed that
  *   every item in the list has the same dimensions as the first item.
  * - Don't use angular one-time binding (`::`) with collection-repeat. The scope of each item is
- *   assigned new data and re-digested as you scroll. Bindings need to update, and one-time bindings
+ *   assigned new models and re-digested as you scroll. Bindings need to update, and one-time bindings
  *   won't.
  *
  * **Performance Tips**:
@@ -8932,7 +8932,7 @@ IonicModule
 .directive('collectionRepeat', CollectionRepeatDirective)
 .factory('$ionicCollectionManager', RepeatManagerFactory);
 
-var ONE_PX_TRANSPARENT_IMG_SRC = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+var ONE_PX_TRANSPARENT_IMG_SRC = 'models:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 var WIDTH_HEIGHT_REGEX = /height:.*?px;\s*width:.*?px/;
 var DEFAULT_RENDER_BUFFER = 3;
 
@@ -8989,7 +8989,7 @@ function CollectionRepeatDirective($ionicCollectionManager, $parse, $window, $$r
     var changeValidator = makeChangeValidator();
     initDimensions();
 
-    // Dimensions are refreshed on resize or data change.
+    // Dimensions are refreshed on resize or models change.
     scrollCtrl.$element.on('scroll-resize', refreshDimensions);
 
     angular.element($window).on('resize', onResize);
@@ -9038,7 +9038,7 @@ function CollectionRepeatDirective($ionicCollectionManager, $parse, $window, $$r
         dataLength: 0,
         width: 0,
         height: 0,
-        // A resize triggers a refresh only if we have data, the scrollView has size,
+        // A resize triggers a refresh only if we have models, the scrollView has size,
         // and the size has changed.
         resizeRequiresRefresh: function(newWidth, newHeight) {
           var requiresRefresh = self.dataLength && newWidth && newHeight &&
@@ -9049,7 +9049,7 @@ function CollectionRepeatDirective($ionicCollectionManager, $parse, $window, $$r
 
           return !!requiresRefresh;
         },
-        // A change in data only triggers a refresh if the data has length, or if the data's
+        // A change in models only triggers a refresh if the models has length, or if the models's
         // length is less than before.
         dataChangeRequiresRefresh: function(newData) {
           var requiresRefresh = newData.length > 0 || newData.length < self.dataLength;
@@ -9346,7 +9346,7 @@ function RepeatManagerFactory($rootScope, $window, $$rAF) {
         estimatedHeight = heightGetter(0, data[0]);
         estimatedWidth = widthGetter(0, data[0]);
       } else {
-        // If we don't have any data in our array, just guess.
+        // If we don't have any models in our array, just guess.
         estimatedHeight = 100;
         estimatedWidth = 100;
       }
@@ -9400,7 +9400,7 @@ function RepeatManagerFactory($rootScope, $window, $$rAF) {
 
       isLayoutReady = true;
       if (isLayoutReady && isDataReady) {
-        // If the resize or latest data change caused the scrollValue to
+        // If the resize or latest models change caused the scrollValue to
         // now be out of bounds, resize the scrollView.
         if (scrollView.__scrollLeft > scrollView.__maxScrollLeft ||
             scrollView.__scrollTop > scrollView.__maxScrollTop) {
@@ -9468,7 +9468,7 @@ function RepeatManagerFactory($rootScope, $window, $$rAF) {
       // one frame, causing visible jank.
       // DON'T call any other functions inside this loop unless it's vital.
       for (i = renderStartIndex; i <= renderEndIndex; i++) {
-        // We only go forward with render if the index is in data, the item isn't already shown,
+        // We only go forward with render if the index is in models, the item isn't already shown,
         // or forceRerender is on.
         if (i >= data.length || (itemsShownMap[i] && !forceRerender)) continue;
 
@@ -9740,7 +9740,7 @@ function RepeatManagerFactory($rootScope, $window, $$rAF) {
       this.onRefreshData = function() {
         var i;
         var ii;
-        // Make sure dimensions has as many items as data.length.
+        // Make sure dimensions has as many items as models.length.
         // This is to be sure we don't have to allocate objects while scrolling.
         for (i = dimensions.length, ii = data.length; i < ii; i++) {
           dimensions.push({});
@@ -9902,7 +9902,7 @@ function($timeout, $controller, $ionicBind, $ionicConfig) {
       element.addClass('scroll-content ionic-scroll');
 
       if (attr.scroll != 'false') {
-        //We cannot use normal transclude here because it breaks element.data()
+        //We cannot use normal transclude here because it breaks element.models()
         //inheritance on compile
         innerElement = jqLite('<div class="scroll"></div>');
         innerElement.append(element.contents());
@@ -10599,7 +10599,7 @@ function headerFooterBarDirective(isHeader) {
  *
  * The expression you pass in for `on-infinite` is called when the user scrolls
  * greater than `distance` away from the bottom of the content.  Once `on-infinite`
- * is done loading new data, it should broadcast the `scroll.infiniteScrollComplete`
+ * is done loading new models, it should broadcast the `scroll.infiniteScrollComplete`
  * event from your controller (see below example).
  *
  * @param {expression} on-infinite What to call when the scroller reaches the
@@ -10642,7 +10642,7 @@ function headerFooterBarDirective(isHeader) {
  * }
  * ```
  *
- * An easy to way to stop infinite scroll once there is no more data to load
+ * An easy to way to stop infinite scroll once there is no more models to load
  * is to use angular's `ng-if` directive:
  *
  * ```html
@@ -11080,7 +11080,7 @@ IonicModule.directive('ionOptionButton', [function() {
 }]);
 
 var ITEM_TPL_REORDER_BUTTON =
-  '<div data-prevent-scroll="true" class="item-right-edit item-reorder enable-pointer-events">' +
+  '<div models-prevent-scroll="true" class="item-right-edit item-reorder enable-pointer-events">' +
   '</div>';
 
 /**
@@ -11135,7 +11135,7 @@ IonicModule
     priority: Number.MAX_VALUE,
     compile: function($element, $attr) {
       $attr.$set('class', ($attr['class'] || '') + ' button icon button-icon', true);
-      $element[0].setAttribute('data-prevent-scroll', true);
+      $element[0].setAttribute('models-prevent-scroll', true);
       return function($scope, $element, $attr, ctrls) {
         var itemCtrl = ctrls[0];
         var listCtrl = ctrls[1];
@@ -12035,7 +12035,7 @@ IonicModule
  * to control the views. However, the AngularUI Router provides a more powerful
  * state manager in that states are bound to named, nested, and parallel views,
  * allowing more than one template to be rendered on the same page.
- * Additionally, each state is not required to be bound to a URL, and data can
+ * Additionally, each state is not required to be bound to a URL, and models can
  * be pushed to each state which allows much flexibility.
  *
  * The ionNavView directive is used to render templates in your application. Each template
@@ -12563,7 +12563,7 @@ function($timeout, $controller, $ionicBind, $ionicConfig) {
     compile: function(element, attr) {
       element.addClass('scroll-view ionic-scroll');
 
-      //We cannot transclude here because it breaks element.data() inheritance on compile
+      //We cannot transclude here because it breaks element.models() inheritance on compile
       var innerElement = jqLite('<div class="scroll"></div>');
       innerElement.append(element.contents());
       element.append(innerElement);
@@ -13309,7 +13309,7 @@ function($animate, $timeout, $compile, $ionicSlideBoxDelegate, $ionicHistory, $i
  * @usage
  * ```html
  * <ion-content scroll="false">
- *   <ion-slides  options="options" slider="data.slider">
+ *   <ion-slides  options="options" slider="models.slider">
  *     <ion-slide-page>
  *       <div class="box blue"><h1>BLUE</h1></div>
  *     </ion-slide-page>
@@ -13330,19 +13330,19 @@ function($animate, $timeout, $compile, $ionicSlideBoxDelegate, $ionicHistory, $i
  *   speed: 500,
  * }
  *
- * $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
- *   // data.slider is the instance of Swiper
- *   $scope.slider = data.slider;
+ * $scope.$on("$ionicSlides.sliderInitialized", function(event, models){
+ *   // models.slider is the instance of Swiper
+ *   $scope.slider = models.slider;
  * });
  *
- * $scope.$on("$ionicSlides.slideChangeStart", function(event, data){
+ * $scope.$on("$ionicSlides.slideChangeStart", function(event, models){
  *   console.log('Slide change is beginning');
  * });
  *
- * $scope.$on("$ionicSlides.slideChangeEnd", function(event, data){
+ * $scope.$on("$ionicSlides.slideChangeEnd", function(event, models){
  *   // note: the indexes are 0-based
- *   $scope.activeIndex = data.slider.activeIndex;
- *   $scope.previousIndex = data.slider.previousIndex;
+ *   $scope.activeIndex = models.slider.activeIndex;
+ *   $scope.previousIndex = models.slider.previousIndex;
  * });
  *
  * ```
@@ -13368,18 +13368,18 @@ function($animate, $timeout, $compile, $ionicSlideBoxDelegate, $ionicHistory, $i
  *
  *
  * ## Updating Slides Dynamically
- * When applying data to the slider at runtime, typically everything will work as expected.
+ * When applying models to the slider at runtime, typically everything will work as expected.
  *
  * In the event that the slides are looped, use the `updateLoop` method on the slider to ensure the slides update correctly.
  *
  * ```
- * $scope.$on("$ionicSlides.sliderInitialized", function(event, data){
+ * $scope.$on("$ionicSlides.sliderInitialized", function(event, models){
  *   // grab an instance of the slider
- *   $scope.slider = data.slider;
+ *   $scope.slider = models.slider;
  * });
  *
  * function dataChangeHandler(){
- *   // call this function when data changes, such as an HTTP request, etc
+ *   // call this function when models changes, such as an HTTP request, etc
  *   if ( $scope.slider ){
  *     $scope.slider.updateLoop();
  *   }
@@ -14031,7 +14031,7 @@ function($ionicTabsDelegate, $ionicConfig) {
     scope: true,
     controller: '$ionicTabs',
     compile: function(tElement) {
-      //We cannot use regular transclude here because it breaks element.data()
+      //We cannot use regular transclude here because it breaks element.models()
       //inheritance on compile
       var innerElement = jqLite('<div class="tab-nav tabs">');
       innerElement.append(tElement.contents());
@@ -14263,8 +14263,8 @@ function($timeout, $ionicConfig) {
  * Views can be cached, which means ***controllers normally only load once***, which may
  * affect your controller logic. To know when a view has entered or left, events
  * have been added that are emitted from the view's scope. These events also
- * contain data about the view, such as the title and whether the back button should
- * show. Also contained is transition data, such as the transition type and
+ * contain models about the view, such as the title and whether the back button should
+ * show. Also contained is transition models, such as the transition type and
  * direction that will be or was used.
  *
  * Life cycle events are emitted upwards from the transitioning view's scope. In some cases, it is
@@ -14342,22 +14342,22 @@ function($timeout, $ionicConfig) {
  * ## LifeCycle Event Usage
  *
  * Below is an example of how to listen to life cycle events and
- * access state parameter data
+ * access state parameter models
  *
  * ```js
- * $scope.$on("$ionicView.beforeEnter", function(event, data){
+ * $scope.$on("$ionicView.beforeEnter", function(event, models){
  *    // handle event
- *    console.log("State Params: ", data.stateParams);
+ *    console.log("State Params: ", models.stateParams);
  * });
  *
- * $scope.$on("$ionicView.enter", function(event, data){
+ * $scope.$on("$ionicView.enter", function(event, models){
  *    // handle event
- *    console.log("State Params: ", data.stateParams);
+ *    console.log("State Params: ", models.stateParams);
  * });
  *
- * $scope.$on("$ionicView.afterEnter", function(event, data){
+ * $scope.$on("$ionicView.afterEnter", function(event, models){
  *    // handle event
- *    console.log("State Params: ", data.stateParams);
+ *    console.log("State Params: ", models.stateParams);
  * });
  * ```
  *
