@@ -1,18 +1,30 @@
 angular.module('starter.controllers', [])
-
 .controller('RegisterCtrl', ['$http', '$scope', '$state', function($http, $scope, $state) {
   var API = 'http://localhost:8106/'
   let me = this;
 
   me.register = function (user) {
-    return $http.post(API + 'user', user).then(function (res) {
+    return $http.post(API + 'register', user).then(function (res) {
       alert('User created!')
       $state.go('tab.create');
     })
   }
 }])
+  .controller('CreateBlogCtrl', ['$http', '$scope', '$state', function($http, $scope, $state) {
+    var API = 'http://localhost:8106/'
+    let me = this;
 
-.controller('BlogCtrl', function($scope) {})
+    me.create = function (blog) {
+      return $http.post(API + 'create', blog).then(function (res) {
+        alert('Blog created!')
+        $state.go('tab.blogs')
+      })
+    }
+  }])
 
-.controller('CreateBlogCtrl', function($scope) {})
+
+  .controller('BlogCtrl', function($scope) {
+
+  })
+
 

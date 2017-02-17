@@ -28,16 +28,34 @@ app.use(function (req, res, next) {
 
 app.listen(8106)
 
-app.get('/', function (req, res) {
+// get Users
+app.get('/users', function (req, res) {
   User.find(function (err, user) {
     if (err) return (err);
     res.json(user);
   })
 })
 
-app.post('/user', function (req, res) {
+// get Blogs
+app.get('/blogs', function (req, res) {
+  Blog.find(function (err, blog) {
+    if (err) return (err);
+    res.json(blog)
+  })
+})
+
+// register User
+app.post('/register', function (req, res) {
   User.create(req.body, function (err, post) {
     if (err) return (err);
-    res.json(post)
+    res.json(post);
+  })
+})
+
+// create Blog Post
+app.post('/create', function (req, res) {
+  Blog.create(req.body, function (err, post) {
+    if (err) return err;
+    res.json(post);
   })
 })
