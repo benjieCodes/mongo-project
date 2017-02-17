@@ -1,3 +1,6 @@
+var express = require('express');
+var app = express();
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var BlogSchema = new Schema({
@@ -9,4 +12,14 @@ var BlogSchema = new Schema({
 
 var Blog = mongoose.model('Blog', BlogSchema);
 
-module.exports = Blog;
+app.get('/blog', function (req, res) {
+})
+
+app.post('/create', function (req, res) {
+  var blog = new Blog();
+  blog.username = req.body.username;
+  blog.title = req.body.title;
+  blog.body = req.body.body;
+  blog.date = req.body.date;
+})
+
