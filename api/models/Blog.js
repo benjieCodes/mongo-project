@@ -4,7 +4,10 @@ var BlogSchema = new Schema({
   userName: String,
   title: String,
   body: String,
-  date: { type: Date, default: Date.now }
+  date: { type: Date, default: Date.now },
+  likes: Number,
+  _creator: {type: Number, ref: 'User'},
+  favorites: [{type: Number, ref: 'User'}]
 })
 
 var Blog = mongoose.model('Blog', BlogSchema);
