@@ -5,14 +5,14 @@ var userRouter = app.Router();
 var User = require('../models/User')
 
 // get Users
-userRouter.get('/', function (req, res) {
+userRouter.get('/users', function (req, res) {
     User.find(function (err, user) {
         if (err) return (err);
         res.json(user);
     })
 })
 // get User
-userRouter.get('/:_id', function (req, res) {
+userRouter.get('users/:_id', function (req, res) {
     User.findById(req.params._id, function (err, user) {
         if (err) return (err);
         res.json(user);
@@ -20,8 +20,9 @@ userRouter.get('/:_id', function (req, res) {
 })
 
 // register User
-userRouter.post('/register', function (req, res) {
+userRouter.post('/users/register', function (req, res) {
     User.create(req.body, function (err, post) {
+        User.populate('_creator', '_id');
         if (err) {
             console.log(err)
             return res.status(500).send();
@@ -35,7 +36,7 @@ userRouter.post('/register', function (req, res) {
 })
 
 // login User
-userRouter.post('/login', function (req, res) {
+userRouter.post('/users/login', function (req, res) {
     var username = req.body.username;
     var password = req.body.password;
     User.findOne({username: username, password: password}, function (err, user) {

@@ -41,9 +41,9 @@ angular.module('starter.controllers', [])
 
     me.createBlog = function (blog) {
       return $http.post(API + 'blogs/create', blog).then(function (res) {
-        alert('Blog post created!')
         $scope.blog = '';
-        me.getBlogs()
+          me.getBlogs()
+        alert('Blog post created!')
         $state.go('tab.blogs')
 
       })

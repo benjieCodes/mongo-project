@@ -23,10 +23,11 @@ app.use(function (req, res, next) {
 });
 
 // routes
-var blogRouter = require('./routes/blogs')
 var userRouter = require('./routes/users')
+var blogRouter = require('./routes/blogs')
+
 
 app.listen(8106)
-app.use('/', blogRouter);
 app.use('/', userRouter);
+app.use('/', blogRouter)
 

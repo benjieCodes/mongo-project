@@ -6,9 +6,20 @@ var Blog = require('../models/Blog')
 
 // get Blogs
 blogRouter.get('/blogs', function (req, res) {
-    Blog.find(function (err, blog) {
-        if (err) return (err);
+    Blog.find( function (err, blog) {
+        if (err) throw (err)
         res.json(blog)
+    })
+})
+
+// get Blogs from User
+blogRouter.get('/blogs/:_id', function (req, res) {
+    Blog.find({user: req.params._id}, function (err) {
+        if (err) throw (err)
+        Blog.populate('Blog', {path: 'User'}, function (err, blog) {
+            if (err) throw err
+            res.json(blog)
+        })
     })
 })
 
