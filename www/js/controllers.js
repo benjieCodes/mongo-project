@@ -7,7 +7,7 @@ angular.module('starter.controllers', [])
     return $http.post(API + 'register', user).then(function (res) {
       alert('User created!')
       $scope.user = '';
-      $state.go('tab.create');
+      $state.go('tab.login');
     })
   }
 }])
@@ -16,7 +16,7 @@ angular.module('starter.controllers', [])
     let me = this;
 
     me.login = function (user) {
-      return $http.get(API + 'users/', user._id).then(function (err, res) {
+      return $http.post(API + 'login', user).then(function (err, user) {
         if (err) throw err;
         if (user) {
           alert('Login success!');
@@ -40,7 +40,7 @@ angular.module('starter.controllers', [])
     }
 
     me.createBlog = function (blog) {
-      return $http.post(API + 'create', blog).then(function (res) {
+      return $http.post(API + 'blogs/create', blog).then(function (res) {
         alert('Blog post created!')
         $scope.blog = '';
         me.getBlogs()

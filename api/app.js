@@ -1,5 +1,5 @@
+// database
 var mongoose = require('mongoose');
-
 mongoose.connect('mongodb://localhost/blogProject', function(err) {
   if(err) {
     console.log('connection error', err);
@@ -22,10 +22,11 @@ app.use(function (req, res, next) {
   next();
 });
 
-// Routes
+// routes
 var blogRouter = require('./routes/blogs')
 var userRouter = require('./routes/users')
 
 app.listen(8106)
 app.use('/', blogRouter);
 app.use('/', userRouter);
+

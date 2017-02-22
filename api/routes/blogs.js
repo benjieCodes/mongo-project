@@ -13,7 +13,7 @@ blogRouter.get('/blogs', function (req, res) {
 })
 
 // create Blog Post
-blogRouter.post('/create', function (req, res) {
+blogRouter.post('/blogs/create', function (req, res) {
     Blog.create(req.body, function (err, post) {
         if (err) return err;
         res.json(post);
