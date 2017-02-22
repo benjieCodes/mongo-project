@@ -8,14 +8,6 @@ mongoose.connect('mongodb://localhost/blogProject', function(err) {
   }
 });
 
-// Models
-var Blog = require('./models/Blog')
-var User = require('./models/User')
-
-// Routes
-var blogRouter = require('./routes/blogs')
-var userRouter = require('./routes/users')
-
 // server
 var express = require('express');
 var bodyParser = require('body-parser')
@@ -30,47 +22,10 @@ app.use(function (req, res, next) {
   next();
 });
 
+// Routes
+var blogRouter = require('./routes/blogs')
+var userRouter = require('./routes/users')
+
 app.listen(8106)
 app.use('/', blogRouter);
 app.use('/', userRouter);
-
-
-// // get Users
-// app.get('/users', function (req, res) {
-//     User.find(function (err, user) {
-//         if (err) return (err);
-//         res.json(user);
-//     })
-// })
-// // get User
-// app.get('/users/:_id', function (req, res) {
-//   User.findById(req.params._id, function (err, user) {
-//     if (err) return (err);
-//     res.json(user);
-//   })
-// })
-//
-// // get Blogs
-// app.get('/blogs', function (req, res) {
-//   Blog.find(function (err, blog) {
-//     if (err) return (err);
-//     res.json(blog)
-//   })
-// })
-//
-// // register User
-// app.post('/register', function (req, res) {
-//   User.create(req.body, function (err, post) {
-//     if (err) return (err);
-//     res.json(post);
-//   })
-// })
-//
-// // create Blog Post
-// app.post('/create', function (req, res) {
-//
-//   Blog.create(req.body, function (err, post) {
-//     if (err) return err;
-//     res.json(post);
-//   })
-// })
