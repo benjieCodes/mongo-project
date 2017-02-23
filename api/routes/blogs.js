@@ -6,28 +6,39 @@ var Blog = require('../models/Blog')
 
 // get Blogs
 blogRouter.get('/blogs', function (req, res) {
-    Blog.find( function (err, blog) {
-        if (err) throw (err)
-        res.json(blog)
+    Blog.find( function (err, blogs) {
+      if (err) {
+        console.log('ERROR - ' + err)
+      }
+      console.log('Successfully got blogs')
+      res.json(blogs);
     })
 })
 
-// get Blogs from User
-blogRouter.get('/blogs/:_id', function (req, res) {
-    Blog.find({user: req.params._id}, function (err) {
-        if (err) throw (err)
-        Blog.populate('Blog', {path: 'User'}, function (err, blog) {
-            if (err) throw err
-            res.json(blog)
-        })
+// get Blog
+blogRouter.get('/blogs/:blogId', function (req, res) {
+    Blog.find({_id: req.params.blogId}, function (err, blogs) {
+        if (err) {
+          console.log('ERROR - ' + err)
+        }
+        console.log('Successfully got blog')
+        res.json(blogs)
     })
 })
 
 // create Blog Post
 blogRouter.post('/blogs/create', function (req, res) {
-    Blog.create(req.body, function (err, post) {
-        if (err) return err;
-        res.json(post);
+    Blog.create(req.body, function (err, blog) {
+      if (err) {
+        console.log('ERROR - ' + err)
+        return res.status(500).send();
+      }
+      else if (!blog) {
+        console.log('Cannot post blog')
+        return res.status(404).send();
+      }
+      console.log('Successfully posted new blog')
+      return res.status(200).send();
     })
 })
 

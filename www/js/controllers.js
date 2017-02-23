@@ -16,14 +16,11 @@ angular.module('starter.controllers', [])
     let me = this;
 
     me.login = function (user) {
-      return $http.post(API + 'login', user).then(function (err, user) {
+      return $http.post(API + 'users/login', user).then(function (err, user) {
         if (err) throw err;
-        if (user) {
           alert('Login success!');
           $scope.user = '';
-          return;
           $state.go('tab.create');
-        }
       })
     }
 
