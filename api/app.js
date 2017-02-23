@@ -2,17 +2,18 @@
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/blogProject', function(err) {
   if(err) {
-    console.log('connection error', err);
-  } else {
-    console.log('connection successful');
+    console.log('mongoose error - ', err);
   }
+    console.log('Mongoose is running...')
 });
 
-// server
+// url connection
+
+
 var express = require('express');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 var app = express()
-console.log('Server is on port:8106')
+
 app.use(bodyParser.json());
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', 'http://localhost:8100'); //LOCATION OF CLIENT APP
@@ -23,11 +24,18 @@ app.use(function (req, res, next) {
 });
 
 // routes
-var userRouter = require('./routes/users')
-var blogRouter = require('./routes/blogs')
+var userRouter = require('./routes/users');
+var blogRouter = require('./routes/blogs');
 
+var port = 8106
 
-app.listen(8106)
+app.listen(port, function(err) {
+  if (err) {
+    console.log('server error - ' + err)
+  }
+  setTimeout(function () {
+    console.log('Server is running...\nRunning on port: ' + port);
+  }, 50)
+})
 app.use('/', userRouter);
-app.use('/', blogRouter)
-
+app.use('/', blogRouter);

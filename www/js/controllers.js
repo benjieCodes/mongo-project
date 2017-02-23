@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 .controller('RegisterCtrl', ['$http', '$scope', '$state', function($http, $scope, $state) {
-  var API = 'http://localhost:8106/'
+  var API = 'http://localhost:8106/';
   let me = this;
 
   me.register = function (user) {
@@ -12,13 +12,15 @@ angular.module('starter.controllers', [])
   }
 }])
   .controller('LoginCtrl', ['$http', '$scope', '$state', function ($http, $scope, $state) {
-    var API = 'http://localhost:8106/'
+    var API = 'http://localhost:8106/';
     let me = this;
 
     me.login = function (user) {
-      return $http.post(API + 'users/login', user).then(function (err, user) {
-        if (err) throw err;
-          alert('Login success!');
+      return $http.post(API + 'users/login', user).then(function (user) {
+          if (user.Status === 404) {
+            alert('Incorrect username/password')
+          }
+          alert('Logged in! Time to Blog!');
           $scope.user = '';
           $state.go('tab.create');
       })
@@ -27,7 +29,7 @@ angular.module('starter.controllers', [])
 
   }])
   .controller('CreateBlogCtrl', ['$http', '$scope', '$state', function($http, $scope, $state) {
-    var API = 'http://localhost:8106/'
+    var API = 'http://localhost:8106/';
     let me = this;
 
     me.getBlogs = function () {
@@ -40,7 +42,7 @@ angular.module('starter.controllers', [])
       return $http.post(API + 'blogs/create', blog).then(function (res) {
         $scope.blog = '';
           me.getBlogs()
-        alert('Blog post created!')
+        alert('Blog post created!');
         $state.go('tab.blogs')
 
       })
@@ -49,7 +51,7 @@ angular.module('starter.controllers', [])
 
 
   .controller('BlogCtrl', ['$http', '$scope', '$state', function($http, $scope) {
-    var API = 'http://localhost:8106/'
+    var API = 'http://localhost:8106/';
     let me = this;
 
     me.getBlogs = function () {

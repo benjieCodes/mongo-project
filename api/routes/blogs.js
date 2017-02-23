@@ -2,7 +2,7 @@ var express = require('express');
 var app = express;
 var blogRouter = app.Router();
 
-var Blog = require('../models/Blog')
+var Blog = require('../models/Blog');
 
 // get Blogs
 blogRouter.get('/blogs', function (req, res) {
@@ -10,7 +10,7 @@ blogRouter.get('/blogs', function (req, res) {
       if (err) {
         console.log('ERROR - ' + err)
       }
-      console.log('Successfully got blogs')
+      console.log('Successfully got blogs');
       res.json(blogs);
     })
 })
@@ -21,7 +21,7 @@ blogRouter.get('/blogs/:blogId', function (req, res) {
         if (err) {
           console.log('ERROR - ' + err)
         }
-        console.log('Successfully got blog')
+        console.log('Successfully got blog');
         res.json(blogs)
     })
 })
@@ -30,14 +30,14 @@ blogRouter.get('/blogs/:blogId', function (req, res) {
 blogRouter.post('/blogs/create', function (req, res) {
     Blog.create(req.body, function (err, blog) {
       if (err) {
-        console.log('ERROR - ' + err)
+        console.log('ERROR - ' + err);
         return res.status(500).send();
       }
       else if (!blog) {
-        console.log('Cannot post blog')
+        console.log('Cannot post blog');
         return res.status(404).send();
       }
-      console.log('Successfully posted new blog')
+      console.log('Successfully posted new blog');
       return res.status(200).send();
     })
 })
