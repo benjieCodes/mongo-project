@@ -39,3 +39,6 @@ app.listen(port, function(err) {
 })
 app.use('/', userRouter);
 app.use('/', blogRouter);
+app.get('/', function (req, res) {
+  res.send('Hello! Here are the routes for databases: /users /blogs')
+})

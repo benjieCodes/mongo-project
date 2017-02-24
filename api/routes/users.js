@@ -7,37 +7,39 @@ var User = require('../models/User');
 // get Users
 userRouter.get('/users', function (req, res) {
     User.find(function (err, user) {
-        if (err) {
-          console.log('ERROR - ' + err)
-        }
         console.log('Successfully got users');
         res.json(user);
     })
+
 })
-// get User
+// get User with blogs
 userRouter.get('/users/:userId', function (req, res) {
     User.findOne({_id: req.params.userId}, function (err, user) {
+      User.populate(user, {path: "_creator"}, function (err, user) {
         if (err) {
-          console.log('ERROR - ' + err )
+          console.log('ERROR - ' + err)
         }
         console.log('Successfully got user');
         res.json(user);
+      })
     })
 })
 
 // register User
 userRouter.post('/users/register', function (req, res) {
     User.create(req.body, function (err, user) {
+      User.populate(user, {path: "_creator"}, function (err, user) {
         if (err) {
-            console.log('ERROR - ' + err);
-            return res.status(500).send();
+          console.log('ERROR - ' + err);
+          return res.status(500).send();
         }
         else if (!user) {
-            console.log('Cannot register User');
-            return res.status(404).send();
+          console.log('Cannot register User');
+          return res.status(404).send();
         }
         console.log('Successfully registered new user');
         return res.status(200).send();
+      })
     })
 })
 

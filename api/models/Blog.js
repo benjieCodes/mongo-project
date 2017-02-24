@@ -11,5 +11,4 @@ var blogSchema = new Schema({
 
 var Blog = mongoose.model('Blog', blogSchema);
 
-Blog.find().populate('blogs', '_id')
 module.exports = Blog;

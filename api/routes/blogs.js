@@ -17,34 +17,31 @@ blogRouter.get('/blogs', function (req, res) {
 
 // get Blog
 blogRouter.get('/blogs/:blogId', function (req, res) {
-    Blog.find({_id: req.params.blogId}, function (err, blogs) {
+    Blog.find({_id: req.params.blogId}, function (err, blog) {
+      Blog.populate(blog, {path: "_blogs"}, function (err, blog) {
         if (err) {
           console.log('ERROR - ' + err)
         }
         console.log('Successfully got blog');
-        res.json(blogs)
+        res.json(blog)
+      })
     })
 })
 
 // create Blog Post
 blogRouter.post('/blogs/create', function (req, res) {
     Blog.create(req.body, function (err, blog) {
-      if (err) {
-        console.log('ERROR - ' + err);
-        return res.status(500).send();
-      }
-      else if (!blog) {
-        console.log('Cannot post blog');
-        return res.status(404).send();
-      }
-      console.log('Successfully posted new blog');
-      return res.status(200).send();
-      Blog.populate('_creator').exec(function (err, res) {
-        console.log(res)
+      Blog.populate(blog, {path: "_blogs"}, function (err, blog) {
         if (err) {
-          console.log('Could not add user to blog')
+          console.log('ERROR - ' + err);
+          return res.status(500).send();
         }
-        console.log(res)
+        else if (!blog) {
+          console.log('Cannot post blog');
+          return res.status(404).send();
+        }
+        console.log('Successfully posted new blog');
+        return res.status(200).send();
       })
     })
 })
