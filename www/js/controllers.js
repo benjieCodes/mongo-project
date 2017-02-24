@@ -4,7 +4,7 @@ angular.module('starter.controllers', [])
   let me = this;
 
   me.register = function (user) {
-    return $http.post(API + 'register', user).then(function (res) {
+    return $http.post(API + 'users/register', user).then(function (res) {
       alert('User created!')
       $scope.user = '';
       $state.go('tab.login');

@@ -15,6 +15,6 @@ var userSchema = new Schema({
 
 var User = mongoose.model('User', userSchema);
 
-User.find().populate('_creator')
+User.find().populate('_blogs')
 module.exports = User;
 

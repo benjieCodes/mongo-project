@@ -39,6 +39,13 @@ blogRouter.post('/blogs/create', function (req, res) {
       }
       console.log('Successfully posted new blog');
       return res.status(200).send();
+      Blog.populate('_creator').exec(function (err, res) {
+        console.log(res)
+        if (err) {
+          console.log('Could not add user to blog')
+        }
+        console.log(res)
+      })
     })
 })
 
